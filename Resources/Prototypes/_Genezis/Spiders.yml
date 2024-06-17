@@ -1,0 +1,1462 @@
+﻿- type: entity
+  id: SpawnPointGhostSpaceQueen
+  name: спавнер роли королевы-пауков
+  suffix: паук-королева
+  parent: MarkerBase
+  components:
+  - type: GhostRole
+    name: Паук-королева
+    description: Ваша задача — построить максимально большой улей. Она рассчитывает на своих детей, потому что её убить не так уж сложно. НЕ НАПАДАЙТЕ ПЕРВЫМИ, только защищайтесь. Нельзя нападать на существ в крите, а умерших нужно относить подальше от логова, чтобы можно было их спасти.
+    rules:  НЕ НАПАДАЙТЕ ПЕРВЫМИ, только защищайтесь. Нельзя нападать на существ в крите, а умерших нужно относить подальше от логова, чтобы можно было их спасти.
+    raffle:
+      settings: default
+  - type: GhostRoleMobSpawner
+    prototype: MobSpiderSpaceQueen
+  - type: Sprite
+    sprite: Markers/jobs.rsi
+    layers:
+      - state: green
+      - sprite: Mobs/Animals/spider.rsi
+        state: midwife
+
+- type: entity
+  noSpawn: true
+  name: Пробка
+  id: MobSpiderSpacePueen
+  parent:
+  - MobAtmosStandard
+  - MobSpaceBasic
+  description: Он так светится, что выглядит опасным.
+  suffix: SpiderK
+  components:
+  - type: Insulated
+  - type: CombatMode
+  - type: InputMover
+  - type: MobMover
+  - type: HTN
+  - type: Sprite #Спрайт
+    drawdepth: Mobs
+    sprite: Mobs/Animals/spider.rsi
+    scale: 1.3, 1.3
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: midwife-moving
+  - type: MobThresholds #ХП
+    thresholds:
+      0: Alive
+      300: Dead
+  - type: Stamina
+    excess: 150
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: midwife-moving
+      Dead:
+        Base: midwife_dead
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+      amount: 2
+    - id: EggSpider
+      amount: 1
+      prob: 0.5
+  - type: Bloodstream
+    bloodMaxVolume: 250
+    bloodReagent: Cryoxadone
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 120
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: MeleeWeapon
+    hidden: true
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0.
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 25 #Урон
+        Poison: 5
+        Structural: 80
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        reagents:
+        - ReagentId: ChloralHydrate #Колит Яд
+          Quantity: 60
+  - type: MeleeChemicalInjector
+    solution: melee
+    transferAmount: 3
+  - type: ReplacementAccent
+    accent: xeno
+  - type: InteractionPopup
+    successChance: 0.20
+    interactSuccessString: petting-success-tarantula
+    interactFailureString: petting-failure-generic
+  - type: NoSlip
+  - type: IgnoreSpiderWeb
+  - type: PassiveDamage # Slight passive regen. Assuming one damage type, comes out to about 4 damage a minute.Самолечение
+    allowedStates:
+    - Alive
+    damageCap: 300
+    damage:
+      types:
+        Heat: -4.5
+      groups:
+        Brute: -4.5
+        Toxin: -7
+        Airloss: -4.5
+        Burn: -4.5
+  - type: Tag
+    tags:
+      - CannotSuicide
+      - DoorBumpOpener
+  - type: Tool # Open door from xeno.yml.
+    speed: 1.5
+    qualities:
+      - Prying
+    useSound:
+      path: /Audio/Items/crowbar.ogg
+  - type: Prying
+    pryPowered: !type:Bool
+        true
+    force: !type:Bool
+      true
+    useSound:
+      path: /Audio/Items/crowbar.ogg
+  - type: Barotrauma #Урон от разгермы
+    damage:
+      types:
+        Blunt: 2
+        Heat: 2
+  - type: Temperature #Урон от температуры.
+    heatDamageThreshold: 325
+    coldDamageThreshold: 260
+    currentTemperature: 310.15
+    specificHeat: 42
+    coldDamage:
+      types:
+        Cold: 0.1 #per second, scales with temperature & other constants
+    heatDamage:
+      types:
+        Heat: 0.1 #per second, scales with temperature & other constants
+  - type: Speech #Крик
+    speechVerb: Arachnid
+    speechSounds: Arachnid
+  - type: Vocal
+    sounds:
+      Male: UnisexArachnid
+      Female: UnisexArachnid
+      Unsexed: UnisexArachnid #Крик
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - HiveRadio
+  - type: ActiveRadio
+    channels:
+    - HiveRadio
+
+- type: radioChannel
+  id: HiveRadio
+  name: Улей
+  keycode: 'l' # Corvax-Localization
+  frequency: 2885
+  color: "#1700cb"
+  longRange: true
+
+- type: entity
+  noSpawn: true
+  name: Гост ролька
+  id: MobSpiderGost
+  suffix: SpiderK
+  components:
+  - type: GhostRole #Гост роль
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    requirements:
+    name: Паучий улей.
+    description: Ваша задача — построить максимально большой улей. НЕ НАПАДАЙТЕ ПЕРВЫМИ, только защищайтесь. Нельзя нападать на существ в крите, а умерших нужно относить подальше от логова, чтобы можно было их спасти.
+  - type: GhostTakeoverAvailable   #Гост роль
+
+#ПАУКИ ВНИЗУ
+- type: entity
+  name: паук-королева
+  id: MobSpiderSpaceQueen
+  parent:
+  - MobSpiderSpacePueen
+  - MobSpiderGost
+  description: Он так светится, что выглядит опасным.|
+  suffix: SpiderK
+  components:
+  - type: AutoImplant
+    implants:
+    - LightImplantSpiderHunter
+    - LightImplantSpiderWallWeb2
+    - LightImplantSpider
+    - LightImplantSpiderGhost
+    - LightImplantSpiderCrystal
+    - LightImplantSpiderLittle
+    - LightImplantSpiderSpiderQueen
+    - LightImplantSpiderShooter
+  - type: Butcherable
+    spawned:
+    - id: FoodMeatSpider
+      amount: 3
+    - id: MobSpiderSpaceLittle
+      amount: 7
+  - type: Spider
+    webPrototype: SpiderWebAbility
+  - type: RechargeBasicEntityAmmo #Кислота
+    rechargeCooldown: 1.5
+  - type: BasicEntityAmmoProvider
+    proto: PoisonousAcid
+    capacity: 2
+    count: 2
+  - type: Gun
+    fireRate: 1
+    useKey: false
+    selectedMode: FullAuto
+    availableModes:
+      - FullAuto
+    soundGunshot: /Audio/Weapons/Xeno/alien_spitacid.ogg  #Звук кислоты   #Кислота
+  - type: MovementSpeedModifier #Скорость 4 базовая
+    baseWalkSpeed : 4
+    baseSprintSpeed : 4
+
+- type: entity
+  name: паук-охранник
+  id: MobSpiderSpaceDrone
+  parent:
+  - MobSpiderSpacePueen
+  - MobSpiderGost
+  description: Он так светится, что выглядит опасным.|
+  suffix: SpiderK
+  components:
+  - type: Sprite #Спрайт
+    drawdepth: Mobs
+    sprite: Mobs/Animals/spider.rsi
+    scale: 1, 1
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: guard-moving
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      85: Dead   #ХП
+  - type: Stamina
+    excess: 150
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: guard-moving
+      Dead:
+        Base: guard_dead
+  - type: PassiveDamage # Slight passive regen. Assuming one damage type, comes out to about 4 damage a minute. Самолечение
+    allowedStates:
+    - Alive
+    damageCap: 85
+    damage:
+      types:
+        Heat: -4
+      groups:
+        Brute: -4
+        Toxin: -6
+        Airloss: -4
+        Burn: -4
+  - type: MeleeWeapon #Урон
+    hidden: true
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 5 #Урон
+        Structural: 15
+  - type: SolutionContainerManager #Колит яд
+    solutions:
+      melee:
+        reagents:
+        - ReagentId: ChloralHydrate
+          Quantity: 0
+  - type: AutoImplant
+    implants:
+    - LightImplantSpiderWallWeb
+    - LightImplantSpiderCrystal
+    - LightImplantSpiderSpider
+  - type: Spider
+    webPrototype: SpiderWebAbility
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 3.9
+    baseSprintSpeed : 3.9
+
+- type: entity
+  name: паук-охотник
+  id: MobSpiderSpaceHunter
+  parent:
+  - MobSpiderSpacePueen
+  - MobSpiderGost
+  description: Он так светится, что выглядит опасным.|
+  suffix: SpiderK
+  components:
+  - type: Sprite #Спрайт
+    drawdepth: Mobs
+    sprite: Mobs/Animals/spider.rsi
+    scale: 1, 1
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: hunter-moving
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      110: Dead   #ХП
+  - type: Stamina
+    excess: 150
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: hunter-moving
+      Dead:
+        Base: hunter_dead
+  - type: PassiveDamage # Slight passive regen. Assuming one damage type, comes out to about 4 damage a minute. Самолечение
+    allowedStates:
+    - Alive
+    damageCap: 110
+    damage:
+      types:
+        Heat: -3
+      groups:
+        Brute: -3
+        Toxin: -6
+        Airloss: -3
+        Burn: -3
+  - type: MeleeWeapon #Урон
+    hidden: true
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 15 #Урон
+        Structural: 20
+  - type: SolutionContainerManager #Колит яд
+    solutions:
+      melee:
+        reagents:
+        - ReagentId: ChloralHydrate
+          Quantity: 0
+  - type: Spider
+    webPrototype: SpiderWebAbility
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 3.9
+    baseSprintSpeed : 3.9
+  - type: AutoImplant
+    implants:
+    - LightImplantSpiderSpiderHunter
+
+- type: entity
+  name: паук-призрак
+  id: MobSpiderSpaceGhost
+  parent:
+  - MobSpiderSpacePueen
+  - MobSpiderGost
+  description: Он так светится, что выглядит опасным.
+  suffix: SpiderK
+  components:
+  - type: Sprite #Спрайт
+    drawdepth: Mobs
+    sprite: Mobs/Animals/spider.rsi
+    scale: 1, 1
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: nurse-moving
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      100: Dead   #ХП
+  - type: Stamina
+    excess: 150
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: nurse-moving
+      Dead:
+        Base: nurse_dead
+  - type: PassiveDamage # Slight passive regen. Assuming one damage type, comes out to about 4 damage a minute. Самолечение
+    allowedStates:
+    - Alive
+    damageCap: 100
+    damage:
+      types:
+        Heat: -3
+      groups:
+        Brute: -3
+        Toxin: -8
+        Airloss: -3
+        Burn: -3
+  - type: MeleeWeapon #Урон
+    hidden: true
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 3 #Урон
+        Poison: 4
+        Structural: 15
+  - type: SolutionContainerManager #Колит яд
+    solutions:
+      melee:
+        reagents:
+        - ReagentId: ChloralHydrate
+          Quantity: 35
+  - type: Stealth #Невидимость
+  - type: StealthOnMove
+    passiveVisibilityRate: -0.37
+    movementVisibilityRate: 0.35
+  - type: RechargeBasicEntityAmmo #Кислота
+    rechargeCooldown: 1.5
+  - type: BasicEntityAmmoProvider
+    proto: PoisonousAcid
+    capacity: 1
+    count: 1
+  - type: Gun
+    fireRate: 0.75
+    useKey: false
+    selectedMode: FullAuto
+    availableModes:
+      - FullAuto
+    soundGunshot: /Audio/Weapons/Xeno/alien_spitacid.ogg  #Звук кислоты   #Кислота
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 3.9
+    baseSprintSpeed : 3.9
+  - type: AutoImplant
+    implants:
+    - LightImplantSpiderSpiderHunter
+
+- type: entity
+  name: паук-стрелок
+  id: MobSpiderSpaceShooter
+  parent:
+  - MobSpiderSpacePueen
+  - MobSpiderGost
+  description: Он так светится, что выглядит опасным.
+  suffix: SpiderK
+  components:
+  - type: Sprite #Спрайт
+    drawdepth: Mobs
+    sprite: Mobs/Animals/spider.rsi
+    scale: 1, 1
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: viper-moving
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      80: Dead   #ХП
+  - type: Stamina
+    excess: 150
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: viper-moving
+      Dead:
+        Base: viper_dead
+  - type: PassiveDamage # Slight passive regen. Assuming one damage type, comes out to about 4 damage a minute. Самолечение
+    allowedStates:
+    - Alive
+    damageCap: 80
+    damage:
+      types:
+        Heat: -1.5
+      groups:
+        Brute: -2.5
+        Toxin: -5
+        Airloss: -2.5
+        Burn: -2.5
+  - type: MeleeWeapon #Урон
+    hidden: true
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Poison: 5
+        Piercing: 2 #Урон
+        Structural: 10 #Урон
+  - type: SolutionContainerManager #Колит яд
+    solutions:
+      melee:
+        reagents:
+        - ReagentId: ChloralHydrate
+          Quantity: 35
+  - type: RechargeBasicEntityAmmo #Кислота
+    rechargeCooldown: 1.5
+  - type: BasicEntityAmmoProvider
+    proto: PoisonousAcid
+    capacity: 3
+    count: 3
+  - type: Gun
+    fireRate: 4
+    useKey: false
+    selectedMode: FullAuto
+    availableModes:
+      - FullAuto
+    soundGunshot: /Audio/Weapons/Xeno/alien_spitacid.ogg  #Звук кислоты   #Кислота
+  - type: AutoImplant
+    implants:
+    - LightImplantSpiderSpiderClown
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 3.7
+    baseSprintSpeed : 3.7
+
+
+- type: entity
+  id: PoisonousAcid #Дальнобойная атака стрелка
+  name: ядовитый плевок
+  parent: BaseBullet
+  noSpawn: true
+  components:
+    - type: Projectile
+      damage:
+        types: #Урон
+          Poison: 6
+          Structural: 2
+    - type: Sprite
+      sprite: Objects/Weapons/Guns/Projectiles/xeno_toxic.rsi
+      layers:
+        - state: xeno_toxic
+    - type: Ammo
+      muzzleFlash: null
+
+- type: entity
+  name: маленький паук
+  id: MobSpiderSpaceLittle
+  parent: MobSpiderSpacePueen
+  description: Он так светится, что выглядит опасным.
+  suffix: SpiderK
+  components:
+  - type: Sprite #Спрайт
+    drawdepth: Mobs
+    sprite: Mobs/Animals/spider.rsi
+    scale: 0.4, 0.4
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: viper-moving
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      10: Dead   #ХП
+  - type: Stamina
+    excess: 150
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: viper-moving
+      Dead:
+        Base: viper_dead
+  - type: PassiveDamage # Slight passive regen. Assuming one damage type, comes out to about 4 damage a minute. Самолечение
+    allowedStates:
+    - Alive
+    damageCap: 10
+    damage:
+      types:
+        Heat: -0.5
+      groups:
+        Brute: -0.5
+        Toxin: -0.5
+        Airloss: -0.5
+        Burn: -0.5
+  - type: MeleeWeapon #Урон
+    hidden: true
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 0
+    animation: WeaponArcBite
+    damage:
+      types:
+        Piercing: 2 #Урон
+  - type: SolutionContainerManager #Колит яд
+    solutions:
+      melee:
+        reagents:
+        - ReagentId: ChloralHydrate
+          Quantity: 0
+  - type: TimedDespawn #Система цикла
+    lifetime: 20
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 4
+    baseSprintSpeed : 4
+
+#Сами импланты
+- type: entity
+  parent: BaseSubdermalImplant #Сам имплант
+  id: LightImplantSpider
+  name: Откладывание яиц охранника
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: ActionSpawnMagicarpSpellSpider      #Суда заклинание
+    - type: PointLight
+      enabled: false
+      radius: 2.5
+      softness: 5
+      mask: /Textures/Effects/LightMasks/cone.png
+      autoRot: true
+    - type: Tag
+      tags:
+        - SubdermalImplant
+        - HideContextMenu
+        - Flashlight
+    - type: UnpoweredFlashlight
+
+- type: entity
+  parent: LightImplantSpider #Сам имплант
+  id: LightImplantSpiderHunter
+  name: Откладывание яиц охотника
+  description:
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: ActionSpawnMagicarpSpellSpiderHunter      #Суда заклинание
+
+- type: entity
+  parent: LightImplantSpider #Сам имплант
+  id: LightImplantSpiderGhost
+  name: Откладывание яиц призрака
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: ActionSpawnMagicarpSpellSpiderGhost      #Суда заклинание
+
+- type: entity
+  parent: LightImplantSpider #Сам имплант
+  id: LightImplantSpiderShooter
+  name: Откладывание яиц стрелка
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: ActionSpawnMagicarpSpellSpiderShooter          #Суда заклинание
+
+- type: entity
+  parent: LightImplantSpider #Сам имплант
+  id: LightImplantSpiderCrystal
+  name: Создать кристалл
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: ActionSpawnMagicarpSpellSpiderCrystal       #Суда заклинание
+
+- type: entity
+  parent: LightImplantSpider #Сам имплант
+  id: LightImplantSpiderWallWeb
+  name: Создать стену
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: ActionSpawnMagicarpSpellSpiderWallWeb         #Суда заклинание
+
+- type: entity
+  parent: LightImplantSpider #Сам имплант
+  id: LightImplantSpiderLittle
+  name: Выпустить детёнышей
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: ActionSpawnMagicarpSpellSpiderLittle         #Суда заклинание
+
+- type: entity
+  parent: LightImplantSpider #Сам имплант
+  id: LightImplantSpiderSpider
+  name: Паутина основная
+  description: Создаёт паутину, которая замедляет вашу добычу.
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: ActionSpawnMagicarpSpellSpiderSpiderWeb           #Суда заклинание
+
+- type: entity
+  parent: LightImplantSpider #Сам имплант
+  id: LightImplantSpiderSpiderHunter
+  name: Паутина охотника
+  description: Создаёт паутину, которая замедляет вашу добычу.
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: ActionSpawnMagicarpSpellSpiderSpiderWebHunter
+
+- type: entity
+  parent: LightImplantSpider  #Сам имплант
+  id: LightImplantSpiderSpiderQueen
+  name: Паутина королевы
+  description: Создаёт паутину, которая замедляет вашу добычу.
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: ActionSpawnMagicarpSpellSpiderSpiderWebQueen           #Суда заклинание
+
+- type: entity
+  parent: LightImplantSpider  #Сам имплант
+  id: LightImplantSpiderSpiderClown
+  name: Паутина клоуна
+  description: Создаёт паутину, которая замедляет вашу добычу.
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: ActionSpawnMagicarpSpellSpiderSpiderWebClown          #Суда заклинание
+
+- type: entity
+  parent: LightImplantSpider #Сам имплант
+  id: LightImplantSpiderWallWeb2
+  name: Создать стену
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: ActionSpawnMagicarpSpellSpiderWallWeb2
+
+
+#Заклинания
+- type: entity
+  id: ActionSpawnMagicarpSpellSpider #Заклинание призыва охранника
+  name: Откладывание яиц охранника
+  description: Он же трутень, может строить кристаллы и стены.
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 200 #КД
+    range: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Magic/magicactions.rsi
+      state: magicmissile
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: SpiderEggDrone
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+
+- type: entity
+  id: ActionSpawnMagicarpSpellSpiderHunter #Заклинание призыва охотника
+  name: Откладывание яиц охотника
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 300 #КД
+    range: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Magic/magicactions.rsi
+      state: magicmissile
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: SpiderEggHunter
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+
+- type: entity
+  id: ActionSpawnMagicarpSpellSpiderGhost #Заклинание призыва призрака
+  name: Откладывание яиц призрака
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 350 #КД
+    range: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Magic/magicactions.rsi
+      state: magicmissile
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: SpiderEggGhost
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+
+- type: entity
+  id: ActionSpawnMagicarpSpellSpiderShooter #Заклинание призыва стрелка
+  name: Откладывание яиц стрелка
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 380 #КД
+    range: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Magic/magicactions.rsi
+      state: magicmissile
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: SpiderEggShooter
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+
+- type: entity
+  id: ActionSpawnMagicarpSpellSpiderCrystal #Заклинание призыва кристалла
+  name: Создать яркий крисстал
+  description: Кристалл, который служит подсветкой для пауков.
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 30 #КД
+    range: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Structures/Decoration/crystal.rsi
+      state: crystal_grey
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: CrystalBlueWall
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+
+- type: entity
+  id: ActionSpawnMagicarpSpellSpiderLittle #Заклинание призыва маленький пауков
+  name: Выпустить детёнышей
+  description: Выпускает трёх маленьких пауков, которые атакуют вашу добычу. Пауки исчезают через 20 секунд.
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 40 #КД
+    range: 2
+    itemIconStyle: BigAction
+    icon:
+      sprite: Mobs/Animals/spider.rsi
+      state: viper_dead
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: MobSpiderSpaceLittle
+        amount: 3
+      offset: 0, 1
+      speech: Кссс...!??
+
+- type: entity
+  id: ActionSpawnMagicarpSpellSpiderWallWeb #Заклинание призыва стены
+  name: Создать стену из паутины
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 8 #КД
+    range: 1.5
+    hungerCost: 15 # Should total to 25 total silk on full hungerСпособность взамен пищи
+    itemIconStyle: BigAction
+    icon:
+      sprite: Structures/Walls/web.rsi
+      state: full
+      useDelay: 30
+    event: !type:WorldSpawnSpellEvent
+      useDelay: 25
+      prototypes:
+      - id: FloorTileItemWebSpiders
+        doAfter: 5
+        amount: 1
+        useDelay: 25
+      offset: 0, 1
+      doAfter: 5
+      speech: Кссс...!??
+
+- type: entity
+  id: ActionSpawnMagicarpSpellSpiderWallWeb2 #Заклинание призыва стены
+  name: Создать прочную стену из паутины
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 8 #КД
+    range: 1.5
+    hungerCost: 15 # Should total to 25 total silk on full hungerСпособность взамен пищи
+    itemIconStyle: BigAction
+    icon:
+      sprite: Structures/Walls/web.rsi
+      state: full
+      useDelay: 30
+    event: !type:WorldSpawnSpellEvent
+      useDelay: 25
+      prototypes:
+      - id: FloorTileItemWebSpiders2
+        doAfter: 5
+        amount: 1
+        useDelay: 25
+      offset: 0, 1
+      doAfter: 5
+      speech: Кссс...!??
+
+- type: entity
+  id: ActionSpawnMagicarpSpellSpiderSpiderWeb #Заклинание призыва паутины  ОСНОВНАЯ
+  name: Паутина
+  description: Создаёт паутину, которая замедляет вашу добычу.
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 3 #КД
+    range: 1.5
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Misc/spiderweb.rsi
+      state: spider_web_1
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: SpiderWebUsual
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+
+- type: entity
+  id: ActionSpawnMagicarpSpellSpiderSpiderWebHunter #Заклинание призыва паутины  ОХОТНИКА
+  name: Слабая паутина
+  description: Создаёт паутину, которая замедляет вашу добычу.
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 8 #КД
+    range: 1.5
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Misc/spiderweb.rsi
+      state: spider_web_1
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: SpiderWeb
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+
+- type: entity
+  id: ActionSpawnMagicarpSpellSpiderSpiderWebQueen #Заклинание призыва паутины  КОРОЛЕВЫ
+  name: Паутина
+  description: Создаёт паутину, которая замедляет вашу добычу.
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 4 #КД
+    range: 1.5
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Misc/spiderweb.rsi
+      state: spider_web_1
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: SpiderWebQueen
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+
+- type: entity
+  id: ActionSpawnMagicarpSpellSpiderSpiderWebClown #Заклинание призыва паутины  КЛОУНА
+  name: Паутина
+  description: Создаёт паутину, которая вязкая и скользкая.
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 25 #КД
+    range: 1.3
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Misc/spiderweb.rsi
+      state: spider_web_clown_1
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: SpiderWebClown
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+
+#Яйца
+- type: entity #Охотник
+  parent: FoodEggBoiled
+  id: SpiderEggHunter
+  name: яйцо паука охотника
+  description: Это драгоценный камень? Это яйцо? Оно выглядит дорогим.
+  components:
+  - type: TimedDespawn #Система цикла
+    lifetime: 80
+  - type: SpawnOnDespawn
+    prototype: MobSpiderSpaceHunter   #Система цикла
+  - type: Sprite
+    sprite: Objects/Misc/eggspider.rsi
+    state: icon
+  - type: MeleeWeapon
+    damage:
+      types:
+        Blunt: 6
+        Structural: 2
+    animation: WeaponArcPunch
+  - type: Item
+    size: Small
+  - type: PointLight
+    radius: 1.5
+    energy: 3
+    color: "#4faffb"
+  - type: StaticPrice
+    price: 1500
+  - type: Barotrauma #Урон от разгермы
+    damage:
+      types:
+        Blunt: 0.1
+        Heat: 0.1
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 25
+        reagents:
+        - ReagentId: Cryoxadone
+          Quantity: 6
+
+- type: entity #охранника
+  parent: SpiderEggHunter
+  id: SpiderEggDrone
+  name: яйцо паука охранника
+  description: Это драгоценный камень? Это яйцо? Оно выглядит дорогим.
+  components:
+  - type: TimedDespawn #Система цикла
+    lifetime: 55
+  - type: SpawnOnDespawn
+    prototype: MobSpiderSpaceDrone   #Система цикла
+
+- type: entity #Призрак
+  parent: SpiderEggHunter
+  id: SpiderEggGhost
+  name: яйцо паука призрака
+  description: Это драгоценный камень? Это яйцо? Оно выглядит дорогим.
+  components:
+  - type: TimedDespawn #Система цикла
+    lifetime: 80
+  - type: SpawnOnDespawn
+    prototype: MobSpiderSpaceGhost   #Система цикла
+
+
+- type: entity #Стрелок
+  parent: SpiderEggHunter
+  id: SpiderEggShooter
+  name: яйцо паука стрельца
+  description: Это драгоценный камень? Это яйцо? Оно выглядит дорогим.
+  components:
+  - type: TimedDespawn #Система цикла
+    lifetime: 80
+  - type: SpawnOnDespawn
+    prototype: MobSpiderSpaceShooter   #Система цикла
+
+
+#Всякое
+- type: entity
+  parent: ShardCrystalBase #Осколок кристалла
+  name: blue crystal shard
+  id: CrystalBlueWall
+  components:
+  - type: Sprite
+    color: "#39a1ff"
+  - type: PointLight
+    radius: 2
+    energy: 2.5
+    color: "#39a1ff"
+  - type: Tag
+    tags:
+      - Trash
+      - CrystalBlue
+  - type: StaticPrice
+    price: 350
+
+#ПАУТИНА
+- type: entity
+  id: SpiderWebUsual #Паутина без шелка.
+  name: паутина
+  parent: SpiderWeb
+  description: Она вязкая и липкая.
+  suffix: SpiderK, обычная
+  placement:
+    mode: SnapgridCenter
+    snap:
+      - Wall
+  components:
+    - type: MeleeSound
+      soundGroups:
+        Brute:
+          path:
+            "/Audio/Weapons/slash.ogg"
+    - type: Sprite
+      sprite: Objects/Misc/spiderweb.rsi
+      layers:
+        - state: spider_web_1
+          map: ["spiderWebLayer"]
+      drawdepth: WallMountedItems
+    - type: Appearance
+    - type: GenericVisualizer
+      visuals:
+        enum.SpiderWebVisuals.Variant:
+          spiderWebLayer:
+            1:  {state: spider_web_1}
+            2:  {state: spider_web_2}
+    - type: Clickable
+    - type: Transform
+      anchored: true
+    - type: Physics
+    - type: Fixtures
+      fixtures:
+        fix1:
+          hard: false
+          density: 7
+          shape:
+            !type:PhysShapeAabb
+            bounds: "-0.5,-0.5,0.5,0.5"
+          layer:
+          - MidImpassable
+    - type: Damageable
+      damageModifierSet: Wood
+    - type: Destructible
+      thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 10
+        behaviors:
+        - !type:DoActsBehavior
+          acts: [ "Destruction" ]
+    - type: Temperature
+      heatDamage:
+        types:
+          Heat: 5
+      coldDamage: {}
+      coldDamageThreshold: 0
+    - type: Flammable
+      fireSpread: true
+      damage:
+        types:
+          Heat: 5
+    - type: Reactive
+      groups:
+        Flammable: [Touch]
+        Extinguish: [Touch]
+    - type: SpiderWebObject
+    - type: SpeedModifierContacts #Замедление паутины
+      walkSpeedModifier: 0.3
+      sprintSpeedModifier: 0.3
+      ignoreWhitelist:
+        components:
+            - IgnoreSpiderWeb
+
+- type: entity
+  id: SpiderWebQueen #Паутина королевы
+  parent: SpiderWebUsual
+  name: королевская паутина
+  description: Она безумно вязкая и липкая.
+  suffix: SpiderK, королева
+  placement:
+    mode: SnapgridCenter
+    snap:
+      - Wall
+  components:
+    - type: SpeedModifierContacts #Замедление паутины
+      walkSpeedModifier: 0.2
+      sprintSpeedModifier: 0.2
+      ignoreWhitelist:
+        components:
+            - IgnoreSpiderWeb
+
+- type: entity
+  id: SpiderWebAbility #Паутина для способности
+  parent: SpiderWebUsual
+  name: паутина накладывающая
+  suffix: SpiderK, временная
+  description: Она вязкая и липкая.
+  placement:
+    mode: SnapgridCenter
+    snap:
+      - Wall
+  components:
+    - type: TimedDespawn #Система цикла
+      lifetime: 13
+    - type: SpeedModifierContacts #Замедление паутины
+      walkSpeedModifier: 0.15
+      sprintSpeedModifier: 0.15
+      ignoreWhitelist:
+        components:
+            - IgnoreSpiderWeb
+
+
+#Система стен
+#Внизу ЭТО ПЛИТКА ИЗ ПАУТИНЫ.
+- type: entity
+  name: конструкция из паутины  #Плитка из паутины
+  description: Очень гладкий и удивительно прочный.
+  parent: FloorTileItemBaseSpiders
+  id: FloorTileItemWebSpiders
+  components:
+  - type: Sprite
+    sprite: Objects/Tiles/web.rsi
+    state: icon
+  - type: FloorTile
+    outputs:
+      - FloorWebTile
+  - type: Stack
+    stackType: FloorTileWeb
+  - type: Construction
+    graph: WebObjects
+    node: tile
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 1
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: TimedDespawn #Система цикла
+    lifetime: 5
+  - type: SpawnOnDespawn
+    prototype: TableWebSpiders  #Система цикла
+
+- type: entity
+  parent: BaseItem
+  id: FloorTileItemBaseSpiders
+  description: These could work as a pretty decent throwing weapon.
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: Objects/Tiles/tile.rsi
+  - type: DamageOtherOnHit
+    damage:
+      types:
+        Blunt: 5
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+        - !type:DoActsBehavior
+          acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 20
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -8
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: DamageOnLand
+    damage:
+      types:
+        Blunt: 5
+
+- type: entity
+  name: "item"
+  id: BaseItemSpider
+  abstract: true
+  components:
+  - type: Clickable
+  - type: InteractionOutline
+  - type: MovedByPressure
+  - type: EmitSoundOnCollide
+    sound:
+      path: /Audio/Effects/wall_bonk.ogg
+  - type: EmitSoundOnLand
+    sound:
+      path: /Audio/Effects/drop.ogg
+      params:
+        volume: 2
+  - type: DamageOnHighSpeedImpact
+    damage:
+      types:
+        Blunt: 5
+    soundHit:
+      path: /Audio/Effects/hit_kick.ogg
+  - type: CollisionWake
+  - type: TileFrictionModifier
+    modifier: 0.5
+  - type: Physics
+    bodyType: Dynamic
+    fixedRotation: false
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.25,-0.25,0.25,0.25"
+        density: 20
+        mask:
+        - ItemMask
+        restitution: 0.3  # fite me
+        friction: 0.2
+  - type: Pullable
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 1
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+#ВЫШЕ ЭТО ПЛИТКА ИЗ ПАУТИНЫ.
+
+- type: entity
+  id: TableWebSpiders #Стол из паутины
+  parent: TableBase
+  name: каркас стены из паутины
+  description: Очень гладкий и удивительно прочный.
+  components:
+  - type: Damageable
+    damageModifierSet: Web
+  - type: Sprite
+    sprite: Structures/Furniture/Tables/web.rsi
+  - type: Icon
+    sprite: Structures/Furniture/Tables/web.rsi
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 10
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path:
+          "/Audio/Weapons/slash.ogg"
+  - type: Construction
+    graph: WebStructures
+    node: table
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepCarpet
+  - type: TimedDespawn #Система цикла
+    lifetime: 5
+  - type: SpawnOnDespawn
+    prototype: WallWeb  #Система цикла
+
+#КРИСТАЛЛ
+- type: entity
+  id: CrystalBlueWall
+  parent: CrystalGreen
+  suffix: blue
+  components:
+    - type: Sprite
+      color: "#39a1ff"
+    - type: PointLight
+      radius: 3
+      energy: 3
+      color: "#39a1ff"
+    - type: Destructible
+      thresholds:
+        - trigger:
+            !type:DamageTrigger
+            damage: 3
+          behaviors:
+            - !type:DoActsBehavior
+              acts: [ "Destruction" ]
+            - !type:PlaySoundBehavior
+              sound:
+                collection: GlassBreak
+            - !type:SpawnEntitiesBehavior
+              spawn:
+                ShardCrystalBlue:
+                  min: 1
+                  max: 2
+
+#ПРОЧНАЯ СТЕНА
+#Внизу ЭТО ПЛИТКА ИЗ ПАУТИНЫ.
+- type: entity
+  name: конструкция из паутины  #Плитка из паутины
+  description: Очень гладкий и удивительно прочный.
+  parent: FloorTileItemWebSpiders
+  id: FloorTileItemWebSpiders2
+  components:
+  - type: TimedDespawn #Система цикла
+    lifetime: 6
+  - type: SpawnOnDespawn
+    prototype: TableWebSpiders2  #Система цикла
+  - type: Sprite
+    sprite: Objects/Tiles/web.rsi
+    state: icon
+    shader: unshaded
+    color: gray
+
+- type: entity
+  id: TableWebSpiders2 #Стол из паутины
+  parent: TableWebSpiders
+  name: каркас стены из паутины
+  description: Очень гладкий и удивительно прочный.
+  components:
+  - type: TimedDespawn #Система цикла
+    lifetime: 8
+  - type: SpawnOnDespawn
+    prototype: WallWebDurable  #Система цикла
+  - type: Sprite
+    sprite: Structures/Furniture/Tables/web.rsi
+    shader: unshaded
+    color: gray
+
+#ВЫШЕ ЭТО ПЛИТКА ИЗ ПАУТИНЫ.
+- type: entity
+  parent: BaseWall
+  id: WallWebDurable
+  name: прочная паутинная стена
+  description: Удерживает паучат внутри, а ассистентов снаружи.
+  components:
+  - type: Clickable
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path:
+          "/Audio/Weapons/slash.ogg"
+  - type: Damageable
+    damageModifierSet: Web
+  - type: Tag
+    tags:
+      - Wall
+  - type: Sprite
+    sprite: Structures/Walls/web.rsi
+    shader: unshaded
+    color: gray
+  - type: Icon
+    sprite: Structures/Walls/web.rsi
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 125
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          MaterialWebSilk:
+            min: 1
+            max: 1
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+  - type: IconSmooth
+    key: webs
+    base: wall
+  - type: Construction
+    graph: WebStructures
+    node: wall
+
+
+
+
+
+
+
+
+
+
+

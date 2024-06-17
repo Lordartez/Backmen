@@ -1,0 +1,1432 @@
+﻿- type: entity
+  noSpawn: true
+  name: Гост ролька
+  id: MobXenoGost
+  suffix: FraG
+  components:
+  - type: GhostRole #Гост роль
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    requirements:
+    name: Ксено Улей
+    description: Ваша задача - защищать королеву любой ценой.
+    raffle:
+      settings: short
+  - type: GhostTakeoverAvailable   #Гост роль
+
+- type: emoteSounds #Крик
+  id: XenoScreamHive
+  params:
+    variation: 0.125
+  sounds:
+    Scream:
+      path: /Audio/Weapons/Xeno/alien_spitacid.ogg
+    Laugh:
+      path: /Audio/Weapons/Xeno/alien_spitacid.ogg
+    Chitter:
+      path: /Audio/Weapons/Xeno/alien_spitacid.ogg
+    Click:
+      path: /Audio/Weapons/Xeno/alien_spitacid.ogg
+    Weh:
+      collection: Weh
+
+#   КСЕНО
+- type: entity
+  name: Родитель
+  id: MobXenoParent
+  noSpawn: true
+  description: Обычно они приходят ночью. Обычно.
+  suffix: FraG
+  components:
+  - type: Speech #Крик
+    speechVerb: Arachnid
+    speechSounds: Arachnid
+  - type: Vocal
+    sounds:
+      Male: UnisexArachnid
+      Female: UnisexArachnid
+      Unsexed: UnisexArachnid #Крик
+  - type: Puller    #Таскать
+    needsHands: false
+
+- type: entity #Королева
+  name: Королева
+  id: MobXenoQueenHive
+  parent:
+  - MobXenoGost
+  - MobXenoQueen
+  description: Похожа на преторианца, но здоровья в 2 раза больше, а так же огромный урон. Скорее всего нужно вызывать ОБР, чтобы справиться с ней.
+  suffix: FraG
+  components:
+  - type: Speech #Крик
+    speechVerb: Arachnid
+    speechSounds: Arachnid
+  - type: Vocal
+    sounds:
+      Male: UnisexArachnid
+      Female: UnisexArachnid
+      Unsexed: UnisexArachnid #Крик
+  - type: AutoImplant
+    implants:
+    - LightImplantSpiderCrystal
+    - ImplantXenoEggHunterAbilityXenoEggMobMobXenoRounyHive
+    - ImplantXenoEggHunterXenoEggMobXenoRavagerHive
+    - ImplantXenoEggMobXenoPraetorianHive
+    - ImplantXenoEggHunterXenoEggMobXenoDroneHive
+    - ImplantXenoEggHunter
+    - ImplantMobXenoSpitter
+    - AbilityWallRockChromiteImplant
+  - type: RechargeBasicEntityAmmo #Кислота
+    rechargeCooldown: 0.75
+  - type: BasicEntityAmmoProvider
+    proto: BulletAcidHive
+    capacity: 1
+    count: 1
+  - type: Gun
+    fireRate: 0.75
+    useKey: false
+    selectedMode: FullAuto
+    availableModes:
+      - FullAuto
+    soundGunshot: /Audio/Weapons/Xeno/alien_spitacid.ogg   #Кислота
+  - type: PassiveDamage # Slight passive regen. Assuming one damage type, comes out to about 4 damage a minute. Самолечение
+    allowedStates:
+    - Alive
+    damageCap: 600
+    damage:
+      types:
+        Heat: -4
+        Caustic: -25
+      groups:
+        Brute: -20
+        Toxin: -6
+        Airloss: -4
+        Burn: -4
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      600: Dead   #ХП
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      500: 0.7
+  - type: MeleeWeapon #Урон
+    hidden: true
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 25
+    animation: WeaponArcBite
+    damage:
+      types:
+        Blunt: 25
+        Piercing: 15 #Урон
+        Structural: 80
+  - type: Puller    #Таскать
+    needsHands: false
+  - type: IgnoreSpiderWeb
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 4.2
+    baseSprintSpeed : 4.2
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: XenoDamage
+  - type: Sprite
+    sprite: Genezis/Mobs/Aliens/queen.rsi
+    layers:
+      - state: alive
+        map: ["enum.DamageStateVisualLayers.Base"]
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: alive
+      Dead:
+        Base: dead
+
+
+- type: damageModifierSet #Модификатор урона.
+  id: XenoDamage #Blunt resistant and immune to biological threats, but can be hacked apart and burned
+  coefficients:
+    Blunt: 0.6
+    Piercing: 0.8
+    Cold: 0.3
+    Heat: 1.5
+    Poison: 0.0
+
+- type: entity #Охотник
+  name: Охотник
+  id: MobXenoHive
+  parent:
+  - MobXenoGost
+  - MobXeno
+  description: Стандартный вид ксеносов.
+  suffix: FraG
+  components:
+  - type: Speech #Крик
+    speechVerb: Arachnid
+    speechSounds: Arachnid
+  - type: Vocal
+    sounds:
+      Male: UnisexArachnid
+      Female: UnisexArachnid
+      Unsexed: UnisexArachnid #Крик
+  - type: PassiveDamage # Slight passive regen. Assuming one damage type, comes out to about 4 damage a minute. Самолечение
+    allowedStates:
+    - Alive
+    damageCap: 300
+    damage:
+      types:
+        Heat: -3.5
+        Caustic: -25
+      groups:
+        Brute: -10
+        Toxin: -6
+        Airloss: -4
+        Burn: -3.5
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      180: Dead   #ХП
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      140: 0.7
+  - type: MeleeWeapon #Урон
+    hidden: true
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 25
+    animation: WeaponArcBite
+    damage:
+      types:
+        Blunt: 25
+        Structural: 20
+  - type: Puller    #Таскать
+    needsHands: false
+  - type: IgnoreSpiderWeb
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 4.4
+    baseSprintSpeed : 4.4
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: XenoDamage
+  - type: Sprite
+    sprite: Genezis/Mobs/Aliens/boxer_warrior.rsi
+    layers:
+      - state: alive
+        map: ["enum.DamageStateVisualLayers.Base"]
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: alive
+      Dead:
+        Base: dead
+
+- type: entity #РУНИ
+  name: Руни
+  id: MobXenoRounyHive
+  parent:
+  - MobXenoGost
+  - MobXenoRouny
+  description: Самый слабый из ксеносов. Выглядит как ошибка природы.
+  suffix: FraG
+  components:
+  - type: Speech #Крик
+    speechVerb: Arachnid
+    speechSounds: Arachnid
+  - type: Vocal
+    sounds:
+      Male: UnisexArachnid
+      Female: UnisexArachnid
+      Unsexed: UnisexArachnid #Крик
+  - type: AutoImplant
+    implants:
+    - XenoLightImplantSpiderActionBlinkBubblegumJump
+  - type: PassiveDamage # Slight passive regen. Assuming one damage type, comes out to about 4 damage a minute. Самолечение
+    allowedStates:
+    - Alive
+    damageCap: 300
+    damage:
+      types:
+        Heat: -1.5
+        Caustic: -25
+      groups:
+        Brute: -8
+        Toxin: -6
+        Airloss: -4
+        Burn: -1.5
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      125: Dead   #ХП
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      100: 0.7
+  - type: MeleeWeapon #Урон
+    hidden: true
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 25
+    animation: WeaponArcBite
+    damage:
+      types:
+        Blunt: 20
+        Structural: 10
+  - type: Puller    #Таскать
+    needsHands: false
+  - type: IgnoreSpiderWeb
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 6
+    baseSprintSpeed : 6
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: XenoDamage
+
+- type: entity #ДРОН
+  name: Дрон
+  id: MobXenoDroneHive
+  parent:
+  - MobXenoGost
+  - MobXenoDrone
+  description: Выглядит массивно.
+  suffix: FraG
+  components:
+  - type: Speech #Крик
+    speechVerb: Arachnid
+    speechSounds: Arachnid
+  - type: Vocal
+    sounds:
+      Male: UnisexArachnid
+      Female: UnisexArachnid
+      Unsexed: UnisexArachnid #Крик
+  - type: AutoImplant
+    implants:
+    - AbilityWallRockChromiteImplant
+    - AbilityWeaponTurretXenoImplant
+    - LightImplantSpiderCrystal
+  - type: PassiveDamage # Slight passive regen. Assuming one damage type, comes out to about 4 damage a minute. Самолечение
+    allowedStates:
+    - Alive
+    damageCap: 300
+    damage:
+      types:
+        Heat: -1.5
+        Caustic: -25
+      groups:
+        Brute: -8
+        Toxin: -6
+        Airloss: -4
+        Burn: -1.5
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      145: Dead   #ХП
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      115: 0.7
+  - type: MeleeWeapon #Урон
+    hidden: true
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 25
+    animation: WeaponArcBite
+    damage:
+      types:
+        Blunt: 15 #Урон
+        Structural: 10
+  - type: Puller    #Таскать
+    needsHands: false
+  - type: IgnoreSpiderWeb
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 4.2
+    baseSprintSpeed : 4.2
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: XenoDamage
+  - type: Sprite
+    sprite: Genezis/Mobs/Aliens/drone.rsi
+    layers:
+      - state: alive
+        map: ["enum.DamageStateVisualLayers.Base"]
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: alive
+      Dead:
+        Base: dead
+
+- type: entity #ПРЕТОР
+  name: Преторианец
+  id: MobXenoPraetorianHive
+  parent:
+  - MobXenoGost
+  - MobXenoPraetorian
+  description: Выглядит как слабая версия королевы.
+  suffix: FraG
+  components:
+  - type: Speech #Крик
+    speechVerb: Arachnid
+    speechSounds: Arachnid
+  - type: Vocal
+    sounds:
+      Male: UnisexArachnid
+      Female: UnisexArachnid
+      Unsexed: UnisexArachnid #Крик
+  - type: AutoImplant
+    implants:
+    - MobTickXenoImplant
+  - type: RechargeBasicEntityAmmo #Кислота
+    rechargeCooldown: 3
+  - type: BasicEntityAmmoProvider
+    proto: BulletAcidHive
+    capacity: 2
+    count: 2
+  - type: Gun
+    fireRate: 2
+    useKey: false
+    selectedMode: FullAuto
+    availableModes:
+      - FullAuto
+    soundGunshot: /Audio/Weapons/Xeno/alien_spitacid.ogg   #Кислота
+  - type: PassiveDamage # Slight passive regen. Assuming one damage type, comes out to about 4 damage a minute. Самолечение
+    allowedStates:
+    - Alive
+    damageCap: 300
+    damage:
+      types:
+        Heat: -2
+        Caustic: -25
+      groups:
+        Brute: -15
+        Toxin: -6
+        Airloss: -4
+        Burn: -2
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Dead   #ХП
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      250: 0.7
+  - type: MeleeWeapon #Урон
+    hidden: true
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 25
+    animation: WeaponArcBite
+    damage:
+      types:
+        Blunt: 35 #Урон
+        Structural: 50
+  - type: Puller    #Таскать
+    needsHands: false
+  - type: IgnoreSpiderWeb
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 4.2
+    baseSprintSpeed : 4.2
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: XenoDamage
+  - type: Sprite
+    sprite: Genezis/Mobs/Aliens/dancer_praetorian.rsi
+    layers:
+      - state: alive
+        map: ["enum.DamageStateVisualLayers.Base"]
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: alive
+      Dead:
+        Base: dead
+
+- type: entity #РАЗРУШИТЕЛЬ
+  name: Разрушитель
+  id: MobXenoRavagerHive
+  parent:
+  - MobXenoGost
+  - MobXenoRavager
+  description: Чтобы справиться с таким, нужен, как минимум, весь отдел СБ или один клоун.
+  suffix: FraG
+  components:
+  - type: Speech #Крик
+    speechVerb: Arachnid
+    speechSounds: Arachnid
+  - type: Vocal
+    sounds:
+      Male: UnisexArachnid
+      Female: UnisexArachnid
+      Unsexed: UnisexArachnid #Крик
+  - type: PassiveDamage # Slight passive regen. Assuming one damage type, comes out to about 4 damage a minute. Самолечение
+    allowedStates:
+    - Alive
+    damageCap: 225
+    damage:
+      types:
+        Heat: -2
+        Caustic: -25
+      groups:
+        Brute: -20
+        Toxin: -6
+        Airloss: -4
+        Burn: -2
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      400: Dead   #ХП
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      325: 0.7
+  - type: MeleeWeapon #Урон
+    hidden: true
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 25
+    animation: WeaponArcBite
+    damage:
+      types:
+        Blunt: 20
+        Piercing: 20 #Урон
+        Structural: 60
+  - type: Puller    #Таскать
+    needsHands: false
+  - type: IgnoreSpiderWeb
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 3.5
+    baseSprintSpeed : 3.5
+  - type: Tag
+    tags:
+      - CannotSuicide
+      - DoorBumpOpener
+      - FootstepSound
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: XenoDamage
+  - type: Sprite
+    sprite: Genezis/Mobs/Aliens/berserker_ravager.rsi
+    layers:
+      - state: alive
+        map: ["enum.DamageStateVisualLayers.Base"]
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: alive
+      Dead:
+        Base: dead
+
+- type: entity #Плеватель
+  name: Плевальщик
+  id: MobXenoSpitterHive
+  parent:
+  - MobXenoGost
+  - MobXenoSpitter
+  description: Дальнобойный ксенос. Очень хрупкий солдат улья.
+  suffix: FraG
+  components:
+  - type: Speech #Крик
+    speechVerb: Arachnid
+    speechSounds: Arachnid
+  - type: Vocal
+    sounds:
+      Male: UnisexArachnid
+      Female: UnisexArachnid
+      Unsexed: UnisexArachnid #Крик
+  - type: PassiveDamage # Slight passive regen. Assuming one damage type, comes out to about 4 damage a minute. Самолечение
+    allowedStates:
+    - Alive
+    damageCap: 225
+    damage:
+      types:
+        Heat: -1
+        Caustic: -25
+      groups:
+        Brute: -8
+        Toxin: -6
+        Airloss: -4
+        Burn: -1
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      90: Dead   #ХП
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      80: 0.7
+  - type: MeleeWeapon #Урон
+    hidden: true
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 25
+    animation: WeaponArcBite
+    damage:
+      types:
+        Blunt: 15
+        Caustic: 15
+        Structural: 10  #Урон
+  - type: Puller    #Таскать
+    needsHands: false
+  - type: IgnoreSpiderWeb
+  - type: MovementSpeedModifier
+    baseWalkSpeed : 4
+    baseSprintSpeed : 4
+  - type: Tag
+    tags:
+      - CannotSuicide
+      - DoorBumpOpener
+      - FootstepSound
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: XenoDamage
+  - type: RechargeBasicEntityAmmo #Кислота
+    rechargeCooldown: 2.5
+  - type: BasicEntityAmmoProvider
+    proto: BulletAcidHive
+    capacity: 2
+    count: 2
+  - type: Gun
+    fireRate: 2
+    useKey: false
+    selectedMode: FullAuto
+    availableModes:
+      - FullAuto
+    soundGunshot: /Audio/Weapons/Xeno/alien_spitacid.ogg   #Кислота
+  - type: Sprite
+    sprite: Genezis/Mobs/Aliens/lurker.rsi
+    layers:
+      - state: alive
+        map: ["enum.DamageStateVisualLayers.Base"]
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: alive
+      Dead:
+        Base: dead
+
+- type: entity
+  id: BulletAcidHive
+  name: кислотный плевок
+  parent: BaseBullet
+  noSpawn: true
+  components:
+    - type: Projectile
+      damage:
+        types:
+          Caustic: 10
+    - type: Sprite
+      sprite: Objects/Weapons/Guns/Projectiles/xeno_toxic.rsi
+      layers:
+        - state: xeno_toxic
+    - type: Ammo
+      muzzleFlash: null
+
+
+#СПОСОБНОСТИ
+- type: entity
+  parent: BaseSubdermalImplant #Сам имплант
+  id: LightImplantSpiderCrystal
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: ActionSpawnMagicarpSpellSpiderCrystal      #Суда заклинание
+- type: entity
+  id: ActionSpawnMagicarpSpellSpiderCrystal #Заклинание призыва кристалла
+  name: Создать яркий крисстал
+  description: Кристалл, который служит подсветкой для вас.
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 30 #КД
+    range: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Structures/Decoration/crystal.rsi
+      state: crystal_grey
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: CrystalBlue
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+
+- type: entity
+  parent: ShardCrystalBase #Осколок кристалла
+  name: blue crystal shard
+  id: ShardCrystalBlue
+  components:
+  - type: Sprite
+    color: "#39a1ff"
+  - type: PointLight
+    radius: 2
+    energy: 2.5
+    color: "#39a1ff"
+  - type: Tag
+    tags:
+      - Trash
+      - CrystalBlue
+  - type: StaticPrice
+    price: 350
+
+- type: entity
+  parent: BaseSubdermalImplant #Сам имплант
+  id: XenoLightImplantSpiderActionBlinkBubblegumJump
+  name: Прыжок.
+  description: Вы разбегаетесь со скоростью света в определенную точку.
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: XenoActionBlinkBubblegumJump      #Суда заклинание
+- type: entity
+  id: XenoActionBlinkBubblegumJump
+  name: Прыжок.
+  description: Вы разбегаетесь со скоростью света в определенную точку.
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 60
+    range: 8
+    itemIconStyle: BigAction
+    checkCanAccess: false
+    repeat: true
+    icon:
+      sprite: Objects/Magic/magicactions.rsi
+      state: magicmissile
+    event: !type:TeleportSpellEvent
+
+- type: entity
+  parent: BaseSubdermalImplant #Сам имплант
+  id: AbilityWallRockChromiteImplant
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: AbilityWallRockChromite      #Суда заклинание
+- type: entity
+  id: AbilityWallRockChromite
+  name: Создать стену.
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 10 #КД
+    range: 2
+    itemIconStyle: BigAction
+    icon:
+      sprite: Structures/Walls/cobblebrick_chromite.rsi
+      noRot: true
+      layers:
+        - state: acid_turret
+      state: full
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: FloorTileItemWebXeno
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+
+- type: entity
+  parent: BaseSubdermalImplant #Сам имплант
+  id: AbilityWeaponTurretXenoImplant
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: AbilityWeaponTurretXeno      #Суда заклинание
+- type: entity
+  id: AbilityWeaponTurretXeno
+  name: Создать турель.
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 30 #КД
+    range: 2
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Weapons/Guns/Turrets/xenoturret.rsi
+      state: acid_turret
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: WeaponTurretXeno2
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+
+- type: entity
+  parent: BaseSubdermalImplant #Сам имплант
+  id: MobTickXenoImplant
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: MobTickXeno      #Суда заклинание
+- type: entity
+  id: MobTickXeno
+  name: Выпустить двух клещей.
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 25 #КД
+    range: 2
+    itemIconStyle: BigAction
+    icon:
+      sprite: Mobs/Aliens/Xenos/spacetick.rsi
+      state: icon
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: MobTickXenoLittle
+        amount: 2
+      offset: 0, 1
+      speech: Кссс...!??
+
+- type: entity
+  name: космический клещ
+  id: MobTickXenoLittle
+  parent: MobTick
+  description: Это космический клещ, остерегайтесь его мерзких укусов. Центком сообщает, что 90 процентов ампутаций ног у утилизаторов происходит из-за укусов космических клещей.
+  suffix: FraG
+  components:
+  - type: TimedDespawn #Система цикла
+    lifetime: 6
+  - type: MeleeWeapon #Урон
+    hidden: true
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    angle: 25
+    animation: WeaponArcBite
+    damage:
+      types:
+        Blunt: 3
+
+#Система стен
+#Внизу ЭТО ПЛИТКА ИЗ ПАУТИНЫ.
+- type: entity
+  name: конструкция ксеноморфов  #Плитка из паутины
+  description: Очень гладкий и удивительно прочный.
+  parent: FloorTileItemBaseXeno
+  id: FloorTileItemWebXeno
+  components:
+  - type: Sprite
+    sprite: Objects/Tiles/tile.rsi
+    state: reinforced
+  - type: FloorTile
+    outputs:
+      - FloorWebTile
+  - type: Stack
+    stackType: FloorTileWeb
+  - type: Construction
+    graph: WebObjects
+    node: tile
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 1
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: TimedDespawn #Система цикла
+    lifetime: 10
+  - type: SpawnOnDespawn
+    prototype: WallWebDurable  #Система цикла
+  - type: PointLight
+    radius: 2
+    energy: 0.7
+    color: "#07832c"
+    castShadows: false
+
+- type: entity
+  parent: BaseItem
+  id: FloorTileItemBaseXeno
+  description: These could work as a pretty decent throwing weapon.
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: Objects/Tiles/tile.rsi
+  - type: DamageOtherOnHit
+    damage:
+      types:
+        Blunt: 5
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+        - !type:DoActsBehavior
+          acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 20
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -8
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: DamageOnLand
+    damage:
+      types:
+        Blunt: 5
+#ВЫШЕ ЭТО ПЛИТКА ИЗ ПАУТИНЫ.
+#Стена
+- type: entity
+  parent:
+  - BaseWall
+  - WallRock
+  id: WallWebDurable
+  name: смола ксеноморфов
+  description: Удерживает личинки внутри, а ассистентов снаружи.
+  components:
+  - type: Clickable
+  - type: MeleeSound
+    soundGroups:
+      Brute:
+        path:
+          "/Audio/Weapons/slash.ogg"
+  - type: Damageable
+    damageModifierSet: Web
+  - type: Tag
+    tags:
+      - Wall
+  - type: Sprite
+    sprite: Structures/Walls/rock.rsi
+    layers:
+      - state: rock_chromite
+      - map: [ "enum.EdgeLayer.South" ]
+        state: rock_chromite_south
+      - map: [ "enum.EdgeLayer.East" ]
+        state: rock_chromite_east
+      - map: [ "enum.EdgeLayer.North" ]
+        state: rock_chromite_north
+      - map: [ "enum.EdgeLayer.West" ]
+        state: rock_chromite_west
+  - type: Icon
+    sprite: Structures/Walls/rock.rsi
+    state: rock_chromite
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 220
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          MaterialWebSilk:
+            min: 0
+            max: 0
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WoodDestroy
+  - type: IconSmooth
+    key: webs
+    base: wall
+  - type: Construction
+    graph: WebStructures
+    node: wall
+
+- type: entity
+  name: ксено турель
+  description: Стреляет кислотными зарядами. #Турель
+  parent: WeaponTurretXeno
+  id: WeaponTurretXeno2
+  suffix: Xeno
+  components:
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 120
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+
+#Яйца
+- type: entity #Охотник
+  parent: FoodEggBoiled
+  id: XenoEggHunter
+  name: яйцо охотника
+  description: Это драгоценный камень? Это яйцо? Оно выглядит дорогим.
+  components:
+  - type: TimedDespawn #Система цикла
+    lifetime: 180
+  - type: SpawnOnDespawn
+    prototype: MobXenoHive   #Система цикла
+  - type: Sprite
+    sprite: Objects/Misc/eggspider.rsi
+    state: icon
+  - type: MeleeWeapon
+    damage:
+      types:
+        Blunt: 6
+        Structural: 2
+    animation: WeaponArcPunch
+  - type: Item
+    size: Small
+  - type: PointLight
+    radius: 1.5
+    energy: 3
+    color: "#4faffb"
+  - type: StaticPrice
+    price: 1500
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 25
+        reagents:
+        - ReagentId: Cryoxadone
+          Quantity: 6
+- type: entity
+  id: XenoEggHunterAbilityAbility #Заклинание призыва призрака
+  name: Откладывание яиц охотника
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 300 #КД
+    range: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Magic/magicactions.rsi
+      state: magicmissile
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: XenoEggHunter
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+- type: entity
+  parent: BaseSubdermalImplant #Сам имплант
+  id: ImplantXenoEggHunter
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: XenoEggHunterAbilityAbility      #Суда заклинание
+
+- type: entity #Дрона
+  parent: XenoEggHunter
+  id: XenoEggMobXenoDroneHive
+  name: яйцо дрона
+  description: Это драгоценный камень? Это яйцо? Оно выглядит дорогим.
+  components:
+  - type: TimedDespawn #Система цикла
+    lifetime: 250
+  - type: SpawnOnDespawn
+    prototype: MobXenoDroneHive   #Система цикла
+- type: entity
+  id: XenoEggMobXenoDroneHiveAbility #Заклинание призыва призрака
+  name: Откладывание яиц дрона
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 300 #КД
+    range: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Magic/magicactions.rsi
+      state: magicmissile
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: XenoEggMobXenoDroneHive
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+- type: entity
+  parent: BaseSubdermalImplant #Сам имплант
+  id: ImplantXenoEggHunterXenoEggMobXenoDroneHive
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: XenoEggMobXenoDroneHiveAbility      #Суда заклинание
+
+- type: entity #Претор
+  parent: XenoEggHunter
+  id: XenoEggMobXenoPraetorianHive
+  name: яйцо преторианца
+  description: Это драгоценный камень? Это яйцо? Оно выглядит дорогим.
+  components:
+  - type: TimedDespawn #Система цикла
+    lifetime: 400
+  - type: SpawnOnDespawn
+    prototype: MobXenoPraetorianHive   #Система цикла
+- type: entity
+  id: XenoEggMobXenoPraetorianHiveAbility #Заклинание призыва призрака
+  name: Откладывание яиц преторианца
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 300 #КД
+    range: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Magic/magicactions.rsi
+      state: magicmissile
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: XenoEggMobXenoPraetorianHive
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+- type: entity
+  parent: BaseSubdermalImplant #Сам имплант
+  id: ImplantXenoEggMobXenoPraetorianHive
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: XenoEggMobXenoPraetorianHiveAbility      #Суда заклинание
+
+- type: entity #РАзрушителя
+  parent: XenoEggHunter
+  id: XenoEggMobXenoRavagerHive
+  name: яйцо разрушителя
+  description: Это драгоценный камень? Это яйцо? Оно выглядит дорогим.
+  components:
+  - type: TimedDespawn #Система цикла
+    lifetime: 380
+  - type: SpawnOnDespawn
+    prototype: MobXenoRavagerHive   #Система цикла
+- type: entity
+  id: XenoEggMobXenoRavagerHiveAbility #Заклинание призыва призрака
+  name: Откладывание яиц разрушителя
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 300 #КД
+    range: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Magic/magicactions.rsi
+      state: magicmissile
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: XenoEggMobXenoRavagerHive
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+- type: entity
+  parent: BaseSubdermalImplant #Сам имплант
+  id: ImplantXenoEggHunterXenoEggMobXenoRavagerHive
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: XenoEggMobXenoRavagerHiveAbility      #Суда заклинание
+
+- type: entity #Руни
+  parent: XenoEggHunter
+  id: XenoEggMobMobXenoRounyHive
+  name: яйцо руни
+  description: Это драгоценный камень? Это яйцо? Оно выглядит дорогим.
+  components:
+  - type: TimedDespawn #Система цикла
+    lifetime: 500
+  - type: SpawnOnDespawn
+    prototype: MobXenoRounyHive   #Система цикла
+- type: entity
+  id: XenoEggMobMobXenoRounyHiveAbility #Заклинание призыва призрака
+  name: Откладывание яиц руни
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 450 #КД
+    range: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Magic/magicactions.rsi
+      state: magicmissile
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: XenoEggMobMobXenoRounyHive
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+- type: entity
+  parent: BaseSubdermalImplant #Сам имплант
+  id: ImplantXenoEggHunterAbilityXenoEggMobMobXenoRounyHive
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: XenoEggMobMobXenoRounyHiveAbility      #Суда заклинание
+
+- type: entity #Плеватель
+  parent: XenoEggHunter
+  id: XenoEggMobMobXenoSpitter
+  name: яйцо плевателя
+  description: Это драгоценный камень? Это яйцо? Оно выглядит дорогим.
+  components:
+  - type: TimedDespawn #Система цикла
+    lifetime: 250
+  - type: SpawnOnDespawn
+    prototype: MobXenoRounyHive   #Система цикла
+- type: entity
+  id: XenoMobXenoSpitterAbility #Заклинание призыва призрака
+  name: Откладывание яиц плевателя
+  noSpawn: true
+  components:
+  - type: WorldTargetAction
+    useDelay: 300 #КД
+    range: 1
+    itemIconStyle: BigAction
+    icon:
+      sprite: Objects/Magic/magicactions.rsi
+      state: magicmissile
+    event: !type:WorldSpawnSpellEvent
+      prototypes:
+      - id: MobXenoSpitterHive
+        amount: 1
+      offset: 0, 1
+      speech: Кссс...!??
+- type: entity
+  parent: BaseSubdermalImplant #Сам имплант
+  id: ImplantMobXenoSpitter
+  noSpawn: true
+  components:
+    - type: SubdermalImplant
+      implantAction: XenoMobXenoSpitterAbility      #Суда заклинание
+
+ #СНАБЖЕНИЕ
+- type: entity
+  parent: GunSafe
+  id: GunSafeShotgunEnforcerPlus
+  name: оружейный элитный сейф Силовиков
+  description: Стандартное хранилище Nanotrasen.
+  suffix: Силовик, 2В Зажигательные, FraG
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponShotgunEnforcer
+      amount: 2
+    - id: MagazineShotgunIncendiary
+      amount: 6
+
+- type: entity
+  parent: GunSafe
+  id: GunSafeShotgunBulldogPlus
+  name: оружейный элитный сейф Бульдогов
+  description: Стандартное хранилище Nanotrasen.
+  suffix: Бульдог, 3В Зажигательные, FraG
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponShotgunBulldog
+      amount: 2
+    - id: MagazineShotgunIncendiary
+      amount: 6
+
+- type: entity
+  id: CrateSecurityRiotPlus
+  parent: CrateSecgear
+  name: ящик элитного снаряжения против беспорядков
+  description: Содержит два комплекта бронежилетов, шлемов, щитов и дробовиков "Силовик", заряженных травматическими патронами. Дополнительные боеприпасы входят в комплект. Чтобы открыть необходим уровень доступа Оружейная.
+  suffix: Броня, 3В, гранаты, FraG
+  components:
+  - type: StorageFill
+    contents:
+      - id: ClothingOuterArmorHeavy
+        amount: 2
+      - id: ClothingHeadHelmetRiot
+        amount: 2
+      - id: RiotShield
+        amount: 2
+      - id: GrenadeIncendiary
+        amount: 2
+      - id: GrenadeStinger
+        amount: 2
+
+- type: entity
+  parent: GunSafe
+  id: GunSafeShotgunRevolverPlus
+  name: оружейный элитный сейф револьверов
+  description: Стандартное хранилище Nanotrasen.
+  suffix: Револьер, 1В, Зажигательные, FraG
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponRevolverInspector
+      amount: 3
+    - id: SpeedLoaderMagnumIncendiary
+      amount: 6
+
+- type: entity
+  parent: GunSafe
+  id: GunSafeShotgunHristovPlus
+  name: оружейный элитный сейф Христов
+  description: Стандартное хранилище Nanotrasen.
+  suffix: Христов, 1В, FraG
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponSniperHristov
+      amount: 2
+    - id: MagazineBoxAntiMateriel
+      amount: 2
+
+- type: entity
+  parent: GunSafe
+  id: GunSafeShotgunSwordPlus
+  name: оружейный элитный сейф световых мечей
+  description: Стандартное хранилище Nanotrasen.
+  suffix: Мечи, 3В, FraG
+  components:
+  - type: StorageFill
+    contents:
+    - id: EnergySword
+      amount: 4
+
+- type: entity
+  parent: GunSafe
+  id: GunSafeLaserCarbinePlus
+  name: оружейный сейф лазерных пушек
+  description: Стандартное хранилище Nanotrasen.
+  suffix: Пушка, 3В, FraG
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponLaserCannon
+      amount: 4
+
+- type: entity
+  parent: GunSafe
+  id: GunSafeLaserAdvancedLaserPlus
+  name: оружейный сейф продвинутых лазерных пистолетов
+  description: Стандартное хранилище Nanotrasen.
+  suffix: Продвинутые, 2В,  FraG
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponAdvancedLaser
+      amount: 4
+
+- type: entity
+  id: CrateArmoryAmmunitionPlus
+  parent: CrateWeaponSecure
+  name: ящик боеприпасов
+  suffix: 1В 2В 3В
+  description: Большой контейнер для предметов.
+  components:
+  - type: StorageFill
+    contents:
+    - id: BoxMagazineShotgun
+      amount: 2
+    - id: BoxMagazinePistolSubMachineGunTopMounted
+      amount: 2
+    - id: BoxMagazineRifle
+      amount: 2
+    - id: BoxMagazinePistolSubMachineGun
+      amount: 2
+
+- type: entity
+  parent: GunSafe
+  id: GunSafeLaserLaserGunPlus
+  name: оружейный сейф лазерных бластеров
+  description: Стандартное хранилище Nanotrasen.
+  suffix: 1В
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponLaserGun
+      amount: 3
+
+#Ваниль
+
+- type: entity
+  parent: GunSafe
+  id: GunSafeLaserCarbineVanilla
+  name: оружейный сейф лазерных карабинов
+  description: Стандартное хранилище Nanotrasen.
+  suffix: 1В
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponLaserCarbine
+      amount: 3
+
+- type: entity
+  id: CrateArmoryPistolsVanilla
+  parent: CrateWeaponSecure
+  name: ящик пистолетов
+  suffix: 1В
+  description: Содержит два стандартных пистолета Nanotrasen, и 4 магазина к ним. Чтобы открыть необходим доступ уровня Оружейной.
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponPistolMk58
+      amount: 2
+    - id: MagazinePistol
+      amount: 4
+
+- type: entity
+  parent: GunSafe
+  id: GunSafeRifleLecterVanilla
+  name: оружейный сейф Лектеров
+  description: Стандартное хранилище Nanotrasen.
+  suffix: 1В
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponRifleLecter
+      amount: 2
+    - id: MagazineRifle
+      amount: 4
+
+- type: entity
+  parent: GunSafe
+  id: GunSafeShotgunKammererVanilla
+  name: оружейный сейф Каммереров
+  description: Стандартное хранилище Nanotrasen.
+  suffix: 1В
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponShotgunKammerer
+      amount: 2
+    - id: MagazineShotgun
+      amount: 4
+
+- type: entity
+  id: CrateSecurityRiotVanilla
+  parent: CrateSecgear
+  name: ящик снаряжения против беспорядков
+  description: Содержит два комплекта бронежилетов, шлемов, щитов и дробовиков "Силовик", заряженных травматическими патронами. Дополнительные боеприпасы входят в комплект. Чтобы открыть необходим уровень доступа Оружейная.
+  suffix: 1В
+  components:
+  - type: StorageFill
+    contents:
+      - id: ClothingOuterArmorRiot
+        amount: 2
+      - id: ClothingHeadHelmetRiot
+        amount: 2
+      - id: WeaponShotgunEnforcerRubber
+        amount: 2
+      - id: BoxBeanbag
+        amount: 2
+      - id: RiotShield
+        amount: 2
+
+- type: entity
+  id: CrateVendingMachineRestockMedicalFilled
+  parent: CrateMedicalSecure
+  name: ящик пополнения НаноМед
+  description: Содержит набор пополнения, совместимый с торгоматами НаноМед и НаноМед Плюс.
+  suffix: 1В 2В 3В
+  components:
+  - type: StorageFill
+    contents:
+      - id: VendingMachineRestockMedical
+
+- type: entity
+  id: CrateEmergencyBruteKit
+  parent: CrateMedical
+  name: аварийный набор лечения механических травм
+  description: Ящик, содержащий набор для лечения механических травм.
+  suffix: 1В 2В 3В
+  components:
+  - type: StorageFill
+    contents:
+    - id: MedkitBruteFilled
+
+
+
+
+
+
+
+
+
