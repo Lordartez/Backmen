@@ -2,7 +2,7 @@
 # Straight in-game baby
 lobbyenabled = true
 # Dev map for faster loading & convenience
-map = "none"
+map = ""
 role_timers = true
 
 [gateway]
@@ -20,8 +20,8 @@ expedition_cooldown = 30.0
 
 [shuttle]
 grid_fill = false
-auto_call_time = 30
-emergency = false
+auto_call_time = 1800
+emergency = true
 arrivals = true
 preload_grids = false
 
@@ -29,4 +29,4 @@ preload_grids = false
 see_own_notes = true
 
 [net]
-tickrate = 20
+tickrate = 60

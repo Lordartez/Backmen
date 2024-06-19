@@ -1,12 +1,4 @@
-﻿- type: startingGear
-  id: HeadRevGear
-  storage:
-    back:
-    - Flash
-    - ClothingEyesGlassesSunglasses
-    - InstrumentRev
-
-#ВНИЗУ УСТРОЙСТВО АПЛИНКА!
+﻿#ВНИЗУ УСТРОЙСТВО АПЛИНКА!
 - type: entity #Сам аплинк
   parent: [ BaseItem, StorePresetUplinkRev ]
   noSpawn: true
@@ -258,7 +250,7 @@
   id: DrapeauRevSet  #Знамя
   name: Знамя Viva La Revolution!
   description: Это знамя, символизирующее революцию. Вива!
-  icon: { sprite: /Textures/Structures/Decoration\banner.rsi, state: banner_revolution }
+  icon: { sprite: /Textures/Structures/Decoration/banner.rsi, state: banner_revolution }
   productEntity: DrapeauRev
   cost:
     Telecrystal: 2
