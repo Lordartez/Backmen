@@ -57,3 +57,130 @@
   cost: 5200
   category: cargoproduct-category-name-armory
   group: market
+
+
+#Список продажи
+
+- type: cargoProduct #Револьеры
+  id: ArmoryRevolver
+  icon:
+    sprite: Structures/Storage/Crates/weapon.rsi
+    state: icon
+  product: CrateArmoryRevolver
+  cost: 3500
+  category: cargoproduct-category-name-armory
+  group: market
+
+- type: cargoProduct #Мосинка
+  id: ArmoryRifle
+  icon:
+    sprite: Structures/Storage/Crates/weapon.rsi
+    state: icon
+  product: CrateArmoRyrifle
+  cost: 2600
+  category: cargoproduct-category-name-armory
+  group: market
+  name: ящик винтовок
+  description: Содержит три винтовки «Мосин» и три спидометра к ним. Для открытия требуется доступ в оружейную.
+
+- type: cargoProduct #Свалинн
+  id: ArmorySvalinn
+  icon:
+    sprite: Structures/Storage/Crates/weapon.rsi
+    state: icon
+  product: CrateArmorySvalinn
+  cost: 1500
+  category: cargoproduct-category-name-armory
+  group: market
+  name: ящик лазеров "Свалинн"
+  description: Содержит три лазера «Свалинн». Для открытия требуется доступ в оружейную.
+
+- type: cargoProduct #Двухствольное
+  id: ArmoryShotgunDoubleBarreled
+  icon:
+    sprite: Structures/Storage/Crates/weapon.rsi
+    state: icon
+  product: CrateArmoryShotgunDoubleBarreled
+  cost: 4500
+  category: cargoproduct-category-name-armory
+  group: market
+  name: ящик двуствольных ружий
+  description: Содержит две двуствольные винтовки NT и три раздатчика патронов к ним.. Для открытия требуется доступ в оружейную.
+
+- type: cargoProduct #Сейсмический заряд
+  id: ArmorySeismicCharge
+  icon:
+    sprite: Structures/Storage/Crates/weapon.rsi
+    state: icon
+  product: CrateSeismicCharge
+  cost: 2500
+  category: cargoproduct-category-name-armory
+  group: market
+  name: ящик сейсмических зарядов
+  description: Содержит пять сейсмических зарядов.
+
+#Ящики внизу
+
+- type: entity
+  id: CrateArmoryRevolver #ЯщикРевольверов
+  parent: CrateWeaponSecure
+  name: ящик револьверов
+  description: Содержит три револьверы "Инспектор" NT и три спидометра к ним. Для открытия требуется доступ в оружейную.
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponRevolverInspector
+      amount: 3
+    - id: SpeedLoaderMagnum
+      amount: 3
+
+- type: entity
+  id: CrateArmoryRifle #ЯщикМосинка
+  parent: CrateWeaponSecure
+  name: ящик винтовок
+  description: Содержит три винтовки «Мосин» и три спидометра к ним. Для открытия требуется доступ в оружейную.
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponSniperMosin
+      amount: 3
+    - id: SpeedLoaderLightRifle
+      amount: 3
+
+- type: entity
+  id: CrateArmorySvalinn #ЯщикЛазерСвалинн
+  parent: CrateWeaponSecure
+  name: ящик лазеров "Свалинн"
+  description: Содержит три лазера «Свалинн». Для открытия требуется доступ в оружейную.
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponLaserSvalinn
+      amount: 3
+
+- type: entity
+  id: CrateArmoryShotgunDoubleBarreled #ЯщикДвухстволок
+  parent: CrateWeaponSecure
+  name: ящик двуствольное ружьё
+  description: Содержит две двуствольные винтовки NT и три раздатчика патронов к ним.. Для открытия требуется доступ в оружейную.
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponShotgunDoubleBarreled
+      amount: 2
+    - id: BoxLethalshot
+      amount: 2
+    - id: BoxShotgunSlug
+      amount: 1
+
+- type: entity
+  id: CrateSeismicCharge #ЯщикСейсмическихЗарядов
+  parent: CrateWeaponSecure
+  name: ящик сейсмических зарядов
+  description: Содержит пять сейсмических зарядов.
+  components:
+  - type: StorageFill
+    contents:
+    - id: SeismicCharge
+      amount: 5
+
