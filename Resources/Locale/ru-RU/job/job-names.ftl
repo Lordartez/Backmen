@@ -1,7 +1,7 @@
-job-name-warden = смотритель
-job-name-security = офицер СБ
-job-name-cadet = кадет СБ
-job-name-hos = глава службы безопасности
+job-name-warden = опрессор
+job-name-security = штурмовик
+job-name-cadet = конскрипт
+job-name-hos = мародер
 job-name-detective = детектив
 job-name-brigmedic = бригмедик
 job-name-borg = киборг
