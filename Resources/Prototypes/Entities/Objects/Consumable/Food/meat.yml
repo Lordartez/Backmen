@@ -334,7 +334,7 @@
     node: start
     defaultTarget: cooked crab
 
-- type: entity
+- type: entity #Genezis Делает мясо дороже
   name: raw goliath meat
   parent: FoodMeatRawBase
   id: FoodMeatGoliath
@@ -356,6 +356,8 @@
     graph: GoliathSteak
     node: start
     defaultTarget: goliath steak
+  - type: StaticPrice
+    price: 350
 
 - type: entity
   name: dragon flesh

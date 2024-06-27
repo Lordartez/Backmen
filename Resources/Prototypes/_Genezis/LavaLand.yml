@@ -1,83 +1,4 @@
-﻿#------------------------------------
-# Работа ВНИЗУ САМОМ ЕСТЬ ШТУКА КОТОРАЯ ДОБАВЛЯЕТ ИХ НА КАРТУ - Vanilla Maps
-#------------------------------------
-
-- type: randomHumanoidSettings
-  id: LavaSettingsMinerProfession
-  randomizeName: true
-  components:
-    - type: Loadout
-      prototypes: [LavaMinerProfessionGear]
-    - type: GhostRole
-      name: 'Шахтёр'
-      description: "Шахтёр, добро пожаловать в замечательные шахты НТ, прозванные Лаваленд. Здесь вы будете крушить камни, сражаться с монстрами и умирать. "
-    - type: GhostTakeoverAvailable
-
-- type: job
-  id: MinerProfession
-  name: Шахтёр
-  description: Шахтёр, добро пожаловать в замечательные шахты НТ, прозванные Лаваленд. Здесь вы будете крушить камни, сражаться с монстрами и умирать.
-  playTimeTracker: JobEvent1
-  requirements:
-    - !type:DepartmentTimeRequirement
-      department: Cargo
-      time: 18000 #5 часов
-  startingGear: LavaMinerProfessionGear
-  icon: "JobIconShaftMiner"
-  supervisors: job-supervisors-qm
-  requireAdminNotify: true
-  joinNotifyCrew: true
-  canBeAntag: false
-  access:
-  - Cargo
-  - Salvage
-  - Maintenance
-  - External
-  special:
-  - !type:AddImplantSpecial
-    implants: [ MindShieldImplant ]
-
-- type: entity
-  id: LavaRandomHumanoidSpawnerMinerProfession
-  name: Шахтёр
-  components:
-    - type: Sprite
-      sprite: Markers/jobs.rsi
-      state: cburn
-    - type: RandomHumanoidSpawner
-      settings: LavaSettingsMinerProfession
-
-- type: startingGear
-  id: LavaMinerProfessionGear
-  equipment:
-    jumpsuit: ClothingUniformJumpsuitSalvageSpecialist #Униформ
-    back: ClothingBackpackDuffelSalvage #Рюкзак
-    shoes: ClothingShoesBootsSalvage #Ботинки
-    head: ClothingHeadHatHardhatYellowDark  #Голова
-    eyes: ClothingEyesGlassesCheapSunglasses    #Очки                             ClothingBeltSalvageWebbing ClothingBeltSecurityFilled
-    gloves: ClothingHandsGlovesColorBlack #Перчатки
-    outerClothing: ClothingOuterWinterMiner #Верх
-    id: MinerPDA
-    ears: ClothingHeadsetMining #Уши
-    belt: BoxSurvival #Поясь
-    pocket1: LavaPhoneInstrument
-    pocket2: AppraisalTool
-
-#-----=========[Добавление в ротацию работ]=========-----#
-
-## Перезапись departments.yml
-
-- type: department
-  id: Cargo
-  description: department-Cargo-description
-  color: "#A46106"
-  roles:
-  - CargoTechnician
-  - Quartermaster
-  - SalvageSpecialist
-  - MinerProfession #Шахтёр
-
-## Спавн маркер
+﻿## Спавн маркер
 
 - type: entity
   id: SpawnPointMinerProfession
@@ -120,6 +41,7 @@
     - state: idshaftminer
   - type: PresetIdCard
     job: MinerProfession
+
 ##МЕГАФАУНА
 
 - type: entity #Удар с аним.
@@ -210,7 +132,6 @@
   id: MobBubblegum
   name: Бубльгум
   description: ЧТО ЭТО??!
-  suffix: FraG, фауна
   components:
   - type: Sprite
     sprite: Genezis/Mobs/Monster/dragon.rsi
@@ -246,10 +167,10 @@
   - type: MobThresholds #ХП
     thresholds:
       0: Alive
-      1600: Dead
+      2600: Dead
   - type: SlowOnDamage
     speedModifierThresholds:
-      1400: 0.7
+      1900: 0.7
   - type: Butcherable #Разделка
     spawned:
       - id: ArtifactFragment
@@ -276,7 +197,6 @@
   - type: AutoImplant
     implants:
     - LightImplantSpiderBubblegum
-    - BaseSubdermalImplantWall
     - LightImplantSpiderBubblegumRune
     - LightImplantSpiderActionBlinkBubblegumJump
     - LavaLightImplanter
@@ -546,78 +466,11 @@
     - type: SubdermalImplant
       implantAction: ActionBlinkBubblegumJump      #Суда заклинание
 
-
-#Мясная стена
-- type: entity
-  id: WoodenSupportBubblegum
-  name: Стена!
-  description: Убегай!
-  parent: WoodenSupport
-  components:
-  - type: Sprite
-    sprite: Genezis/Mobs/Monster/telegraph.rsi
-    state: hoarder_circle
-  - type: Fixtures
-    fixtures:
-      fix1:
-        hard: false
-        shape:
-          !type:PhysShapeAabb
-          bounds: "-0.5,-0.5,0.5,0.5"
-        mask:
-        - FullTileMask
-        layer:
-        - WallLayer
-        density: 1000
-  - type: TimedDespawn #Система цикла
-    lifetime: 8
-  - type: SpawnOnDespawn
-    prototype: FloorLavaEntityBubblegum   #Система цикла
-
-- type: entity
-  id: FloorLavaEntityBubblegum
-  name: мясная стена
-  description: Липко!
-  parent: WallMeat
-  components:
-  - type: TimedDespawn
-    lifetime: 8
-
-- type: entity
-  id: ActionSpawnMagicarpBubblegumWall  #Заклинание призыва лавы 1
-  name: Создать стену.
-  noSpawn: true
-  components:
-  - type: WorldTargetAction
-    useDelay: 8 #КД
-    range: 15
-    itemIconStyle: BigAction
-    icon:
-      sprite: Genezis/Mobs/Monster/telegraph.rsi
-      state: hoarder_circle
-    event: !type:WorldSpawnSpellEvent
-      prototypes:
-      - id: WoodenSupportBubblegum
-        amount: 5
-      offset: 0, 1
-      speech: Кссс...!??
-
-- type: entity
-  parent: BaseSubdermalImplant #Сам имплант
-  id: BaseSubdermalImplantWall
-  name: Создать стену.
-  description:
-  noSpawn: true
-  components:
-    - type: SubdermalImplant
-      implantAction: ActionSpawnMagicarpBubblegumWall      #Суда заклинание
-
 #ДРЕЙК
 - type: entity
   parent: MobBubblegum
   id: MobAshDrake
   name: Дрейк
-  suffix: FraG, фауна
   components:
   - type: Sprite
     sprite: Genezis/Mobs/Monster/dragon.rsi
@@ -917,7 +770,6 @@
   parent: MobBubblegum
   id: MobColossus
   name: Колосс
-  suffix: FraG, фауна
   components:
   - type: Sprite
     sprite: Genezis/Mobs/Monster/dragon.rsi
@@ -1594,7 +1446,6 @@
   - MobReptilian
   id: MobCivilianInquisitorLava
   description: Жалкая кучка тайн.
-  suffix: Пеплоходец, Шахтёр, FraG
   components:
   - type: Eye
     drawFov: false
@@ -1671,7 +1522,6 @@
   - MobReptilian
   id: MobCivilianInquisitorLavaShaman
   description: Жалкая кучка тайн.
-  suffix: ШАМАН Пеплоходец, Шахтёр, FraG
   components:
   - type: Eye
     drawFov: false
@@ -1864,32 +1714,6 @@
   - type: TimedDespawn #Система цикла
     lifetime: 5
 
-- type: entity #Делает мясо дороже
-  name: raw goliath meat
-  parent: FoodMeatRawBase
-  id: FoodMeatGoliath
-  description: A slab of goliath meat. It's not very edible now, but it cooks great in lava.
-  components:
-  - type: Sprite
-    state: goliath
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        reagents:
-        - ReagentId: UncookedAnimalProteins
-          Quantity: 5
-        - ReagentId: Fat
-          Quantity: 3
-  - type: InternalTemperature
-    thickness: 0.1 # very big, do cook it in lava
-  - type: Construction
-    graph: GoliathSteak
-    node: start
-    defaultTarget: goliath steak
-  - type: StaticPrice
-    price: 350
-
-
 - type: entity
   name: периодический спавнер голиафа
   suffix: случайно, шахтёров, FraG, фауна
@@ -1915,52 +1739,7 @@
       minimumEntitiesSpawned: 1
       maximumEntitiesSpawned: 1
 
-#НАБЛЮДАТЕЛЬ
-- type: entity
-  id: MobWatcherMagmawing
-  parent: MobWatcherBase
-  name: magmawing watcher
-  suffix: FraG, фауна
-  components:
-  - type: Sprite
-    layers:
-    - map: [ "enum.DamageStateVisualLayers.Base" ]
-      state: base
-    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
-      state: unshaded
-      shader: unshaded
-      color: orangered
-  - type: PointLight
-    radius: 1.5
-    energy: 1
-    color: orangered
-  - type: ProjectileBatteryAmmoProvider
-    proto: WatcherBoltMagmawing
-    fireCost: 50
-  - type: TimedDespawn #Система цикла
-    lifetime: 360
-    ignoreWhitelist:
-  - type: MovementSpeedModifier #Скорость
-    baseWalkSpeed: 3
-    baseSprintSpeed: 3
-  - type: MobThresholds
-    thresholds:
-      0: Alive
-      90: Dead
-  - type: Butcherable #Разделка
-    spawned:
-      - id: MaterialWebSilk1
-        amount: 3
-      - id: MaterialCotton1
-        amount: 4
-  - type: Destructible
-    thresholds:
-      - trigger:
-          !type:DamageTrigger
-          damage: 110
-  - type: Bloodstream
-    bloodMaxVolume: 0
-    bloodReagent: Cryoxadone
+#СПАВНЕР НАБЛЮДАТЕЛЯ
 
 - type: entity
   name: Спавнер наблюдателя
@@ -2499,26 +2278,8 @@
     graph: GhostSheet
     node: ghost_sheet
 
-
-- type: entity
-  name: proto-kinetic accelerator
-  id: WeaponProtoKineticAccelerator
-  parent: WeaponProtoKineticAcceleratorBase
-  description: Fires low-damage kinetic bolts at a short range.
-  components:
-  - type: Sprite
-    sprite: Objects/Weapons/Guns/Basic/kinetic_accelerator.rsi
-    layers:
-    - state: icon
-    - state: animation-icon
-      visible: false
-      map: [ "empty-icon" ]
-  - type: Construction
-    graph: GhostSheet
-    node: ghost_sheet
-
-
 #МЕДИПЕН
+
 - type: entity
   name: автоинъектор от повреждений
   parent: BruteAutoInjector
@@ -2535,7 +2296,7 @@
   - type: Tag
     tags: []
 
-#ЩИПЫ
+#ШИПЫ
 
 - type: entity
   name: Шип Некрополя
@@ -2844,7 +2605,7 @@
 
 #КРАФТЫ
 
-#4 Ваниль
+#1 Ваниль
 - type: construction
   name: костяной доспех
   id: BoneArmorK
@@ -2855,7 +2616,7 @@
   description: Сидит на вас как вторая кожа.
   icon: { sprite: Clothing/OuterClothing/Armor/bone_armor.rsi, state: icon }
   objectType: Item
-#5
+#2
 - type: construction
   name: костяной шлем
   id: BoneHelmetK
@@ -2866,7 +2627,7 @@
   description: Круто выглядящий шлем, сделанный из черепов ваших врагов.
   icon: { sprite: Clothing/Head/Helmets/bone_helmet.rsi, state: icon }
   objectType: Item
-#6
+#3
 - type: construction
   name: костяное копьё
   id: SpearBoneK
@@ -2877,78 +2638,3 @@
   description: Копьё, сделанное из костей.
   icon: { sprite: Objects/Weapons/Melee/bone_spear.rsi, state: spear }
   objectType: Item
-
-
-#------------------------------------
-# Добавление работы в карты в конец
-#------------------------------------
-
-#-----====-----#
-#[Vanilla Maps]#
-#-----====-----#
-
-- type: gameMap
-  id: Cluster
-  mapName: 'Cluster'
-  mapPath: /Maps/cluster.yml
-  minPlayers: 10
-  maxPlayers: 35
-  stations:
-    Cluster:
-      stationProto: StandardNanotrasenStation
-      components:
-        - type: StationEmergencyShuttle
-          emergencyShuttlePath: /Maps/Shuttles/emergency_transit.yml
-        - type: StationNameSetup
-          mapNameTemplate: '{0} Cluster Station {1}'
-          nameGenerator:
-            !type:NanotrasenNameGenerator
-            prefixCreator: '14'
-        - type: StationJobs
-          overflowJobs:
-            - Passenger
-          availableJobs:
-            #service
-            Captain: [ 1, 1 ]
-            IAA: [ 1, 1 ] # Corvax-IAA
-            HeadOfPersonnel: [ 1, 1 ]
-            Bartender: [ 1, 1 ]
-            Botanist: [ 2, 2 ]
-            Chef: [ 1, 1 ]
-            Janitor: [ 1, 1 ]
-            Chaplain: [ 1, 1 ]
-            Librarian: [ 1, 1 ]
-            #Lawyer: [ 1, 1 ] # Corvax-IAA
-            ServiceWorker: [ 1, 1 ]
-            #engineering
-            ChiefEngineer: [ 1, 1 ]
-            AtmosphericTechnician: [ 2, 2 ]
-            StationEngineer: [ 3, 3 ]
-            TechnicalAssistant: [ 2, 2 ]
-            #medical
-            ChiefMedicalOfficer: [ 1, 1 ]
-            Chemist: [ 1, 1 ]
-            MedicalDoctor: [ 2, 2 ]
-            MedicalIntern: [ 2, 2 ]
-            #science
-            ResearchDirector: [ 1, 1 ]
-            Scientist: [ 3, 3 ]
-            ResearchAssistant: [ 2, 2 ]
-            Borg: [ 1, 1 ]
-            #security
-            HeadOfSecurity: [ 1, 1 ]
-            Warden: [ 1, 1 ]
-            Detective: [ 1, 1 ]
-            SecurityOfficer: [ 3, 3 ]
-            SecurityCadet: [ 2, 2 ]
-            #supply
-            Quartermaster: [ 1, 1 ]
-            SalvageSpecialist: [ 2, 2 ]
-            CargoTechnician: [ 1, 1 ]
-            #civillian
-            Passenger: [ -1, -1 ]
-            Clown: [ 1, 1 ]
-            Mime: [ 1, 1 ]
-            Musician: [ 1, 1 ]
-            # custom
-            MinerProfession: [ 5, 5 ] # 5 раундстарт, 5 позднее присоединение
