@@ -196,7 +196,6 @@
         Burn: -8.5
   - type: AutoImplant
     implants:
-    - LightImplantSpiderBubblegum
     - LightImplantSpiderBubblegumRune
     - LightImplantSpiderActionBlinkBubblegumJump
     - LavaLightImplanter
@@ -365,36 +364,6 @@
       ignoreWhitelist:
         components:
             - IgnoreSpiderWeb
-
-
-- type: entity
-  id: ActionSpawnMagicarpBubblegum #Заклинание призыва лавы 1
-  name: Замедлить врага.
-  noSpawn: true
-  components:
-  - type: WorldTargetAction
-    useDelay: 3 #КД
-    range: 15
-    itemIconStyle: BigAction
-    icon:
-      sprite: Genezis/Mobs/Monster/telegraph.rsi
-      state: target_circle
-    event: !type:WorldSpawnSpellEvent
-      prototypes:
-      - id: SpiderWebUsual
-        amount: 1
-      offset: 0, 1
-      speech: Кссс...!??
-
-- type: entity
-  parent: BaseSubdermalImplant #Сам имплант
-  id: LightImplantSpiderBubblegum
-  name: Замедлить врага.
-  description:
-  noSpawn: true
-  components:
-    - type: SubdermalImplant
-      implantAction: ActionSpawnMagicarpBubblegum      #Суда заклинание
 
 #Руна
 - type: entity
