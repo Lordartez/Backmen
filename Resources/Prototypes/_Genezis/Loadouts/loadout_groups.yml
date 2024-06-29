@@ -1,0 +1,51 @@
+# Cargo miner
+
+- type: loadoutGroup
+  id: LavaMinerHead
+  name: loadout-group-miner-head
+  loadouts:
+  - ClothingHeadHatHardhatYellowDark
+  - ClothingHeadHatHardhatBlue
+  - ClothingHeadHatHardhatOrange
+  - ClothingHeadHatHardhatRed
+  - ClothingHeadHatHardhatWhite
+  - ClothingHeadHatHardhatYellow
+  - ClothingHeadHatHardhatArmored
+  - ClothingHeadHatUshanka
+
+- type: loadoutGroup
+  id: LavaMinerJumpsuit
+  name: loadout-group-miner-jumpsuit
+  loadouts:
+  - CaptainJumpsuit
+  - CaptainJumpskirt
+  - CaptainFormalSuit
+  - CaptainFormalSkirt
+  # Corvax-Loadouts-Start
+  - CaptainJumpsuitTurtleneck
+  - CaptainJumpskirtTurtleneck
+  # Corvax-Loadouts-End
+
+- type: loadoutGroup
+  id: LavaMinerNeck
+  name: loadout-group-miner-neck
+  minLimit: 0
+  loadouts:
+  - CaptainCloak
+  - CaptainCloakFormal
+  - CaptainMantle
+
+- type: loadoutGroup
+  id: LavaMinerBackpack
+  name: loadout-group-miner-backpack
+  loadouts:
+  - CaptainBackpack
+  - CaptainSatchel
+  - CaptainDuffel
+
+- type: loadoutGroup
+  id: LavaMinerOuterClothing
+  name: loadout-group-miner-outerclothing
+  loadouts:
+  - CaptainOuterClothing
+  - CaptainWintercoat

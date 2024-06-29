@@ -1,0 +1,44 @@
+- type: startingGear
+  id: LavaMinerProfessionGear
+  equipment:
+    id: MinerPDA
+    jumpsuit: ClothingUniformJumpsuitSalvageSpecialist #Униформ
+    back: ClothingBackpackDuffelSalvage #Рюкзак
+    shoes: ClothingShoesBootsSalvage #Ботинки
+    head: ClothingHeadHatHardhatYellowDark  #Голова
+    eyes: ClothingEyesGlassesCheapSunglasses    #Очки                             ClothingBeltSalvageWebbing ClothingBeltSecurityFilled
+    gloves: ClothingHandsGlovesColorBlack #Перчатки
+    outerClothing: ClothingOuterWinterMiner #Верх
+    ears: ClothingHeadsetMining #Уши
+    pocket1: LavaPhoneInstrument
+
+
+# Back
+- type: loadout
+  id: LavaMinerBackpack
+  equipment: SalvageSpecialistBackpack
+
+- type: startingGear
+  id: LavaMinerBackpack
+  equipment:
+    back: ClothingBackpackSalvage
+
+# Head
+- type: loadout
+  id: LavaMinerHead
+  equipment: SalvageSpecialistBackpack
+
+- type: startingGear
+  id: LavaMinerHead
+  equipment:
+    head: ClothingHeadHatHardhatArmored
+
+# OuterClothing
+- type: loadout
+  id: LavaMinerOuterClothing
+  equipment: SalvageSpecialistWintercoat
+
+- type: startingGear
+  id: LavaMinerOuterClothing
+  equipment:
+    outerClothing: ClothingOuterWinterMiner
