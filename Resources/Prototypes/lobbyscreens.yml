@@ -1,3 +1,7 @@
 - type: lobbyBackground
   id: lava
   background: /Textures/LobbyScreens/lava.webp
+
+- type: lobbyBackground
+  id: lava2
+  background: /Textures/LobbyScreens/lava2.webp

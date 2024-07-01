@@ -2,7 +2,6 @@
   id: JobMinerProfession
   groups:
   - LavaMinerHead
-  - LavaMinerNeck
   - LavaMinerJumpsuit
   - LavaMinerBackpack
   - LavaMinerOuterClothing
@@ -10,4 +9,3 @@
   - Medals #backmen
   - Inventory # Corvax-Loadouts
   - Survival
-  - Trinkets

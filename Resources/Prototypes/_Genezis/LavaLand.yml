@@ -62,7 +62,6 @@
   noSpawn: true
   name: Гост ролька
   id: MobLavaGost
-  suffix: FraG
   components:
   - type: GhostRole #Гост роль
     makeSentient: true
@@ -241,7 +240,6 @@
 - type: entity
   id: SpawnPointGhostBubblegum
   name: спавнер роли Бубльгум
-  suffix: FraG
   parent: MarkerBase
   components:
   - type: GhostRole
@@ -264,7 +262,6 @@
   id: ClothingNeckCloakGoliathCloakHellspawn
   name: плащ Бубльгума
   description: Редкий трофей!
-  suffix: FraG
   components:
   - type: Armor
     modifiers:
@@ -289,7 +286,6 @@
   name: капкан
   description: Ловушка!
   parent: SpiderWeb
-  suffix: FraG, обычная
   placement:
     mode: SnapgridCenter
     snap:
@@ -384,7 +380,7 @@
       - id: IgniteRuneRune
         amount: 1
       offset: 0, 1
-      speech: Кссс...!??
+      speech: Рррр...!??
 
 - type: entity
   parent: BaseSubdermalImplant #Сам имплант
@@ -485,11 +481,6 @@
   - type: SlowOnDamage
     speedModifierThresholds:
       550: 0.7
-  - type: AutoImplant
-    implants:
-    - LightImplantSpiderDrake
-    - LightImplantSpiderDrakeOne
-    - LightImplantSpiderDrakeOne
   - type: Butcherable #Разделка
     spawned:
       - id: MaterialBones
@@ -569,7 +560,6 @@
 - type: entity
   id: SpawnPointGhostDrake
   name: спавнер роли Дрейк
-  suffix: FraG
   parent: MarkerBase
   components:
   - type: GhostRole
@@ -592,7 +582,6 @@
   id: ClothingOuterArmorBoneBubblegum
   name: доспех из костей дракона
   description: Редкий трофей!
-  suffix: FraG
   components:
   - type: Armor
     modifiers:
@@ -639,100 +628,6 @@
   - type: IgnitionSource
     ignited: true
 
-
-#Лава
-- type: entity
-  id: WoodenSupportBeamDrake
-  name: лава!
-  description: Убегай!
-  parent: WoodenSupport
-  components:
-  - type: Sprite
-    sprite: Genezis/Mobs/Monster/telegraph.rsi
-    state: skull
-  - type: Fixtures
-    fixtures:
-      fix1:
-        hard: false
-        shape:
-          !type:PhysShapeAabb
-          bounds: "-0.5,-0.5,0.5,0.5"
-        mask:
-        - FullTileMask
-        layer:
-        - WallLayer
-        density: 1000
-  - type: TimedDespawn #Система цикла
-    lifetime: 3
-  - type: SpawnOnDespawn
-    prototype: FloorLavaEntityDrake   #Система цикла
-
-- type: entity
-  id: FloorLavaEntityDrake
-  name: временная лава
-  description: Не прыгай туда!
-  parent: FloorLavaEntity
-  components:
-  - type: TimedDespawn
-    lifetime: 10
-
-- type: entity
-  id: ActionSpawnMagicarpDrake #Заклинание призыва лавы 3
-  name: Призвать лаву
-  noSpawn: true
-  components:
-  - type: WorldTargetAction
-    useDelay: 5 #КД
-    range: 15
-    itemIconStyle: BigAction
-    icon:
-      sprite: Genezis/Mobs/Monster/telegraph.rsi
-      state: skull
-    event: !type:WorldSpawnSpellEvent
-      prototypes:
-      - id: WoodenSupportBeamDrake
-        amount: 3
-      offset: 0, 1
-      speech: Кссс...!??
-
-- type: entity
-  id: ActionSpawnMagicarpDrakeOne #Заклинание призыва лавы 1
-  name: Призвать одну лаву
-  noSpawn: true
-  components:
-  - type: WorldTargetAction
-    useDelay: 1 #КД
-    range: 15
-    itemIconStyle: BigAction
-    icon:
-      sprite: Genezis/Mobs/Monster/telegraph.rsi
-      state: skull
-    event: !type:WorldSpawnSpellEvent
-      prototypes:
-      - id: WoodenSupportBeamDrake
-        amount: 1
-      offset: 0, 1
-      speech: Кссс...!??
-
-- type: entity
-  parent: BaseSubdermalImplant #Сам имплант
-  id: LightImplantSpiderDrake
-  name: Призвать лаву
-  description:
-  noSpawn: true
-  components:
-    - type: SubdermalImplant
-      implantAction: ActionSpawnMagicarpDrake      #Суда заклинание
-
-- type: entity
-  parent: BaseSubdermalImplant #Сам имплант
-  id: LightImplantSpiderDrakeOne
-  name: Призвать лаву
-  description:
-  noSpawn: true
-  components:
-    - type: SubdermalImplant
-      implantAction: ActionSpawnMagicarpDrakeOne      #Суда заклинание
 
 #КОЛОСС
 - type: entity
@@ -824,7 +719,6 @@
 - type: entity
   id: SpawnPointGhostColossus
   name: спавнер роли Колосс
-  suffix: FraG
   parent: MarkerBase
   components:
   - type: GhostRole
@@ -884,7 +778,6 @@
   id: ClothingNeckCloakHeraldBubblegum
   name: плащ Колосса
   description: Редкий трофей!
-  suffix: FraG
   components:
   - type: Armor
     modifiers:
@@ -911,7 +804,6 @@
   - MobBubblegum
   id: MobLegion
   name: Легион
-  suffix: FraG, фауна
   components:
   - type: Sprite
     sprite: Genezis/Mobs/Monster/empire.rsi
@@ -972,7 +864,7 @@
     selectedMode: FullAuto
     availableModes:
       - FullAuto
-    soundGunshot: Audio/Genezis/Voice/Lava/the-lava-bubble-gurgled.ogg   #Звук кислоты   #Кислота
+    soundGunshot: /Audio/Genezis/Voice/Lavaland/the-lava-bubble-gurgled.ogg   #Звук кислоты   #Кислота
   - type: Bloodstream
     bloodMaxVolume: 0
     bloodReagent: Cryoxadone
@@ -1019,7 +911,6 @@
 - type: entity
   id: SpawnPointGhostLegion
   name: спавнер роли Легиона
-  suffix: FraG
   parent: MarkerBase
   components:
   - type: GhostRole
@@ -1042,7 +933,6 @@
   id: ClothingNeckCloakVoidLegion
   name: плащ легиона
   description: Редкий трофей!
-  suffix: FraG
   components:
   - type: ClothingSpeedModifier
     walkModifier: 1.3
@@ -1058,7 +948,6 @@
   id: MobDinosaurAnkiSmallSmall
   name: череп легиона
   description: О боже оно бежит ко мне??!
-  suffix: FraG, фауна
   components:
   - type: Sprite
     sprite: Genezis/Mobs/Monster/legion.rsi
@@ -1098,9 +987,6 @@
     bloodReagent: Cryoxadone
 
 
-
-
-
 - type: entity
   parent:
   - MobLavaGost
@@ -1108,7 +994,6 @@
   id: MobDinosaurAnkiSmall
   name: легион #Большой
   description: Кто это?
-  suffix: FraG, фауна
   components:
   - type: Sprite
     sprite: Genezis/Mobs/Monster/empire.rsi
@@ -1162,7 +1047,7 @@
     selectedMode: FullAuto
     availableModes:
       - FullAuto
-    soundGunshot: Audio/Genezis/Voice/Lavaland/the-lava-bubble-gurgled.ogg #Звук кислоты   #Кислота
+    soundGunshot: /Audio/Genezis/Voice/Lavaland/the-lava-bubble-gurgled.ogg #Звук кислоты   #Кислота
   - type: Destructible
     thresholds:
       - trigger:
@@ -1210,7 +1095,6 @@
   id: HealingToolboxKernel
   name: ядро легиона
   description: В то время как ядро может быть использованы для лечения грубых и ожоговых повреждений, причина, по которой они так важны, заключается в том, что они могут исцелять сломанные кости и внутреннее кровотечение. Способность лечения пропадает через 5 минут!
-  suffix: FraG
   components:
   - type: Sprite
     sprite: Genezis/Mobs/Monster/healing_toolbox.rsi
@@ -1240,43 +1124,6 @@
   - type: Construction
     graph: GhostSheet
     node: ghost_sheet
-
-- type: entity
-  parent: BaseHealingItem
-  id: HealingToolboxKernelSerum
-  name: ядро легиона в сыворотке
-  description: В то время как ядро может быть использованы для лечения грубых и ожоговых повреждений, причина, по которой они так важны, заключается в том, что они могут исцелять сломанные кости и внутреннее кровотечение.
-  suffix: FraG
-  components:
-  - type: Sprite
-    sprite: Genezis/Mobs/Monster/healing_toolbox.rsi
-    state: icon
-  - type: Healing
-    damageContainers:
-    - Biological
-    damage:
-      groups: # these are all split across multiple types
-        Brute: -150
-        Burn: -150
-        Toxin: -150
-    bloodlossModifier: -20
-    delay: 1
-    selfHealPenaltyMultiplier: 0
-    healingBeginSound:
-      path: "/Audio/Items/Medical/ointment_begin.ogg"
-    healingEndSound:
-      path: "/Audio/Items/Medical/ointment_end.ogg"
-  - type: PointLight
-    radius: 2
-    energy: 0.2
-    color: "#ff4242"
-    castShadows: false
-  - type: Construction
-    graph: HealingToolboxKernel
-    node: LavaSerumHeart
-  - type: Tag
-    tags:
-    - HealingToolboxKernelSerum
 
 #Череп
 - type: entity
@@ -1361,14 +1208,12 @@
   id: MobDinosaurAnkiSmallBig
   noSpawn: true
   name: легион #Большой
-  suffix: FraG
   components:
   - type: TimedDespawn #Система цикла
     lifetime: 20
 
 - type: entity
   name: периодический спавнер легиона
-  suffix: случайно, шахтёров, FraG
   id: WallRockBasaltSpawnerLavaLegion
   parent: MarkerBase
   components:
@@ -1396,7 +1241,6 @@
   noSpawn: true
   name: Гост ролька
   id: MobLavaGostResident
-  suffix: FraG
   components:
   - type: GhostRole #Гост роль
     makeSentient: true
@@ -1404,12 +1248,12 @@
     allowMovement: true
     requirements:
     name: Пеплоходец
-    description: Защитите свои охотничьи угодья. Нельзя просто так заходить на пост шахтёров, вы не нападаете на людей без причины. У вас есть базовые навыки и продвинутые знания в ботанике.
+    description: Защитите свои охотничьи угодья. Нельзя просто так заходить на пост шахтёров, вы не нападаете на людей без причины.
   - type: GhostTakeoverAvailable   #Гост роль
 
 #Человек внизу
 - type: entity
-  name: Неизвестный
+  name: Пеплоходец
   parent:
   - MobLavaGostResident
   - MobReptilian
@@ -1485,7 +1329,7 @@
 
  #ШАМАН
 - type: entity
-  name: Неизвестный
+  name: Пеплоходец шаман
   parent:
   - MobLavaGostResident
   - MobReptilian
@@ -1551,7 +1395,7 @@
 
 - type: entity
   id: ActionSpawnMagicarpSpellSpiderResident #Заклинание призыва охранника
-  name: Создание яиц.
+  name: Призыв пеплоходца.
   description: Можно создавать только на "легионерский костёр".
   noSpawn: true
   components:
@@ -1572,7 +1416,7 @@
 - type: entity
   parent: FoodEgg
   id: FoodEggResident #Заклинание призыва охранника
-  name: яйцо
+  name: яйцо призыва
   description: Яйцо!
   noSpawn: true
   components:
@@ -1581,6 +1425,51 @@
   - type: SpawnOnDespawn
     prototype: MobCivilianInquisitorLava   #Система цикла
 
+
+#СПАВНЕРЫ ПЕПЛОХОДЦЕВ
+- type: entity
+  name: спавнер пеплоходца
+  id: SpawnMobAshwalker
+  parent: SpawnMobLegion
+  components:
+  - type: ConditionalSpawner
+    prototypes:
+    - MobCivilianInquisitorLava
+
+- type: entity
+  name: спавнер пеплоходца шамана
+  id: SpawnMobAshwalkerShaman
+  parent: SpawnMobLegion
+  components:
+  - type: ConditionalSpawner
+    prototypes:
+    - MobCivilianInquisitorLavaShaman
+
+- type: entity
+  name: периодический спавнер пеплоходца
+  id: SpawnerLavaAshwalker
+  parent: MarkerBase
+  components:
+    - type: Sprite
+      layers:
+        - state: blue
+        - sprite: Genezis/Mobs/Monster/goliath.rsi
+          state: dragon
+        - state: timed
+    - type: Timer
+    - type: TimedSpawner
+      prototypes:
+        - MobCivilianInquisitorLava
+      # round ~90m
+      # one spawner should only spawn ~5 mice for sanity reasons
+      # therefore 18m
+      # use 50% chance for randomness and balance with halved interval
+      chance: 0.5
+      intervalSeconds: 240
+      minimumEntitiesSpawned: 1
+      maximumEntitiesSpawned: 1
+
+
 #ГОЛИАФЫ
 - type: entity
   parent:
@@ -1588,7 +1477,6 @@
   id: MobGoliath
   name: голиаф
   description: Кто это?
-  suffix: FraG, фауна
   components:
   - type: Sprite
     sprite: Genezis/Mobs/Monster/goliath.rsi
@@ -1659,33 +1547,7 @@
     - MobGoliath
 
 - type: entity
-  id: WoodenSupportBeamGoliath
-  name: шипы #Криво работают и не используются.
-  description: Убегай!
-  parent:
-  - TrashBananaPeelExplosive
-  components:
-  - type: Sprite
-    sprite: Genezis/Mobs/Monster/goliath.rsi
-    state: eva_attack
-  - type: Fixtures
-    fixtures:
-      fix1:
-        hard: false
-        shape:
-          !type:PhysShapeAabb
-          bounds: "-0.5,-0.5,0.5,0.5"
-        mask:
-        - FullTileMask
-        layer:
-        - WallLayer
-        density: 1000
-  - type: TimedDespawn #Система цикла
-    lifetime: 5
-
-- type: entity
   name: периодический спавнер голиафа
-  suffix: случайно, шахтёров, FraG, фауна
   id: WallRockBasaltSpawnerLavaGoliath
   parent: MarkerBase
   components:
@@ -1721,7 +1583,6 @@
 
 - type: entity
   name: периодический спавнер наблюдателя
-  suffix: случайно, шахтёров, FraG
   id: WallRockBasaltSpawnerLavaObserver
   parent: MarkerBase
   components:
@@ -1747,7 +1608,6 @@
 #!АПЛИНК И РУДЫ!
 - type: entity
   name: спавнер базальта случайно
-  suffix: случайно, руда, шахтёров, FraG
   id: WallRockBasaltSpawnerLava1
   parent: MarkerBase
   components:
@@ -1812,7 +1672,6 @@
 
 - type: entity
   name: периодический спавнер базальта
-  suffix: случайно, шахтёров, FraG
   id: WallRockBasaltSpawnerLava2
   parent: MarkerBase
   components:
@@ -1842,7 +1701,6 @@
   parent: WallRockBasalt
   name: базальт
   description: Каменная стена. Что это торчит из неё?
-  suffix: валюта, кристалл, FraG
   components:
     - type: OreVein
       oreChance: 1.0
@@ -1895,7 +1753,6 @@
   id: LavaPhoneInstrument
   name: терминал шахтёров
   description: Винтажное радио?
-  suffix: Аплинк, Шахтёр, FraG
   components:
   - type: Sprite
     sprite: Objects/Devices/communication.rsi
@@ -1925,8 +1782,7 @@
   name: Инфиритовых Кристалла
   parent: BaseItem
   id: LavaRudaIvent
-  suffix: Шахтёр, FraG
-  description: Кристалл, изученный научным департаментом НТ, имеет много применений.
+  description: Кристалл, изученный научным департаментом Триглава, имеет много применений.
   components:
   - type: Sprite
     sprite: Objects/Misc/stock_parts.rsi
@@ -2076,7 +1932,6 @@
   id: ClothingBackpackDuffelSalvageLava
   name: вещмешок шахтёра
   description: Большой вещмешок для хранения дополнительных экзотических сокровищ.
-  suffix: FraG
   components:
     - type: StorageFill
       contents:
@@ -2168,7 +2023,6 @@
   id: LavaModifier
   name: модуль усовершенствования
   description: Улучшает оружие шахтеров. Например протокинетический ускоритель.
-  suffix: FraG
   components:
   - type: Sprite
     sprite: Genezis/Mobs/Monster/modifier.rsi
@@ -2184,7 +2038,6 @@
   id: LavaClothingOuterHardsuitSpatio
   name: буровой скафандр утилизатора
   description: Бронированный скафандр, предназначенный для шахтёров на Лаваленде.
-  suffix: FraG
   components:
   - type: Sprite
     sprite: Genezis/Mobs/Monster/spatio.rsi
@@ -2216,7 +2069,6 @@
   id: LavaWeaponProtoKineticAccelerator
   parent: WeaponProtoKineticAcceleratorBase
   description: Стреляет кинетическими зарядами с низким уроном на короткое расстояние. Имеет увеличенный боекомплект — 2 снаряда, а также более высокую скорострельность, но при этом более медленную перезарядку.
-  suffix: FraG
   components:
   - type: Sprite
     sprite: Objects/Weapons/Guns/Basic/kinetic_accelerator.rsi
@@ -2272,7 +2124,6 @@
   description: Порождение некрополя, шип из разложившейся плоти пробившийся наружу из самых недр Лаваленда дабы дать жизнь бесчисленному множеству чудовищ.
   parent: BaseWeaponTurret
   id: TurretPliersGoliath
-  suffix: Голиаф,FraG,фауна
   components:
     - type: NpcFactionMember
       factions:
@@ -2288,7 +2139,7 @@
     - type: Gun
       fireRate: 0.15
       selectedMode: FullAuto
-      soundGunshot: Audio/Genezis/Voice/Lavaland/the-lava-bubble-gurgled.ogg
+      soundGunshot: /Audio/Genezis/Voice/Lavaland/the-lava-bubble-gurgled.ogg
     - type: HTN
       rootTask:
         task: TurretCompound
@@ -2329,7 +2180,6 @@
   description: Порождение некрополя, шип из разложившейся плоти пробившийся наружу из самых недр Лаваленда дабы дать жизнь бесчисленному множеству чудовищ.
   parent: TurretPliersGoliath
   id: TurretPliersMagmawing
-  suffix: Наблюдатель,FraG,фауна
   components:
     - type: BallisticAmmoProvider
       proto: SpawnMobWatcherMagmawing
@@ -2340,7 +2190,6 @@
   description: Порождение некрополя, шип из разложившейся плоти пробившийся наружу из самых недр Лаваленда дабы дать жизнь бесчисленному множеству чудовищ.
   parent: TurretPliersGoliath
   id: TurretPliersLegion
-  suffix: Легион,FraG,фауна
   components:
     - type: BallisticAmmoProvider
       proto: SpawnMobDinosaurAnkiSmall
@@ -2439,7 +2288,6 @@
 - type: entity
   parent: CratePirate
   id: Necrocrateopen
-  suffix: FraG
   name: сундук Некрополя
   description: Что же он скрывает? Столько загадок и тайн! И мне кажется, что он смотрит на меня.
   components:
@@ -2463,7 +2311,6 @@
 
 - type: entity
   id: NecrocrateopenRandom
-  suffix: Заполненный, случайный, FraG
   parent: Necrocrateopen
   components:
     - type: StorageFill

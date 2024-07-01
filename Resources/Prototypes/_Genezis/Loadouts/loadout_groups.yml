@@ -2,50 +2,34 @@
 
 - type: loadoutGroup
   id: LavaMinerHead
-  name: loadout-group-miner-head
+  name: Выбор головного убора
   loadouts:
-  - ClothingHeadHatHardhatYellowDark
-  - ClothingHeadHatHardhatBlue
   - ClothingHeadHatHardhatOrange
+  - ClothingHeadHatHardhatBlue
   - ClothingHeadHatHardhatRed
   - ClothingHeadHatHardhatWhite
   - ClothingHeadHatHardhatYellow
-  - ClothingHeadHatHardhatArmored
+  - ClothingHeadHatHardhatYellowDark
   - ClothingHeadHatUshanka
 
 - type: loadoutGroup
   id: LavaMinerJumpsuit
-  name: loadout-group-miner-jumpsuit
+  name: Выбор комбинезона
   loadouts:
-  - CaptainJumpsuit
-  - CaptainJumpskirt
-  - CaptainFormalSuit
-  - CaptainFormalSkirt
-  # Corvax-Loadouts-Start
-  - CaptainJumpsuitTurtleneck
-  - CaptainJumpskirtTurtleneck
-  # Corvax-Loadouts-End
-
-- type: loadoutGroup
-  id: LavaMinerNeck
-  name: loadout-group-miner-neck
-  minLimit: 0
-  loadouts:
-  - CaptainCloak
-  - CaptainCloakFormal
-  - CaptainMantle
+  - ClothingUniformJumpsuitSalvageSpecialist
+  - ClothingUniformJumpsuitAncient
 
 - type: loadoutGroup
   id: LavaMinerBackpack
-  name: loadout-group-miner-backpack
+  name: Выбор рюкзака
   loadouts:
-  - CaptainBackpack
-  - CaptainSatchel
-  - CaptainDuffel
+  - ClothingBackpackDuffelSalvage
+  - ClothingBackpackSalvage
+  - ClothingBackpackSatchelSalvage
 
 - type: loadoutGroup
   id: LavaMinerOuterClothing
-  name: loadout-group-miner-outerclothing
+  name: Выбор куртки
   loadouts:
-  - CaptainOuterClothing
-  - CaptainWintercoat
+  - ClothingOuterWinterMiner
+  - ClothingOuterCoatBomber

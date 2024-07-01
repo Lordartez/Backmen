@@ -2,13 +2,13 @@
   id: MinerProfession
   name: шахтёр
   description: Добро пожаловать к самоубийцам, Сынок. Ваша задача отправится на планету прозванную Лаваленд, сражайтесь с монстрами и умирайте во имя Триглава.
+  icon: "JobIconLavaMiner"
   playTimeTracker: JobMinerProfession
   requirements:
     - !type:DepartmentTimeRequirement
       department: Cargo
       time: 18000 #5 часов
   startingGear: LavaMinerProfessionGear
-  icon: "JobIconShaftMiner"
   supervisors: job-supervisors-qm
   requireAdminNotify: true
   joinNotifyCrew: true
